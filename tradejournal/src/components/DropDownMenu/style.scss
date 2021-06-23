@@ -5,22 +5,21 @@
   transform: translateY(100%);
   right: 0;
   bottom: 0;
-  padding: 10px;
-
   display: none;
   z-index: 10;
-
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
   box-shadow: 0 1px 3px var(--primary);
 
   transition: all 0.3s ease;
 
-  .list_item {
+  .list_link {
+    display: inline-block;
     padding: 10px 15px;
     text-align: center;
+    width: 100%;
     color: var(--text);
-    &:hover a {
+    &:hover {
       color: var(--text-light);
     }
   }

@@ -1,14 +1,15 @@
 import React from "react";
 import "./style.scss";
+import { Link } from "react-router-dom";
 
 const DropDownMenu = ({ list = [] }) => {
   return (
     <ul className="list list-unstyled">
-      {list.map((item, i) => (
+      {list.map((el, i) => (
         <li className="list_item" key={i}>
-          <a className="list_link" href={item.link}>
-            {item.title}
-          </a>
+          <Link to={el.link} className="list_link">
+            {el.title}
+          </Link>
         </li>
       ))}
     </ul>
