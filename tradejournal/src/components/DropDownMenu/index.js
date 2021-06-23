@@ -3,7 +3,7 @@ import "./style.scss";
 
 const DropDownMenu = ({ list = [] }) => {
   return (
-    <ul className="list">
+    <ul className="list list-unstyled">
       {list.map((item, i) => (
         <li className="list_item" key={i}>
           <a className="list_link" href={item.link}>

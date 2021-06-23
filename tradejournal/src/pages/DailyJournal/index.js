@@ -63,7 +63,9 @@ const DailyJournal = (props) => {
           <span>Filter</span>
         </h4>
         <div className="section_content">
-          <CalendarInput value={value} onChange={onChange} />
+          <div className="col-3">
+            <CalendarInput value={value} onChange={onChange} />
+          </div>
           <div className="col-3">
             <Input
               value={search}
@@ -85,7 +87,7 @@ const DailyJournal = (props) => {
           <AddIcon className="icon-small" />
           <span>Add Post</span>
         </h4>
-        <form className="form">
+        <form className="form" onSubmit={(e) => handleSubmit(e)}>
           <div className="col-10">
             <Input
               label="Post Title"
@@ -108,12 +110,7 @@ const DailyJournal = (props) => {
             <CalendarInput value={postDate} onChange={setPostDate} />
           </div>
           <div className="col-3 mt-2">
-            <Button
-              type="submit"
-              value="Create"
-              btnStyle="btn--submit"
-              handler={(e) => handleSubmit(e)}
-            />
+            <Button type="submit" value="Create" btnStyle="btn--submit" />
           </div>
         </form>
       </section>
