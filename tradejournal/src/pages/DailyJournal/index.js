@@ -18,6 +18,7 @@ import "react-calendar/dist/Calendar.css";
 import "react-quill/dist/quill.snow.css";
 import Journal from "../../components/Journal";
 import PostForm from "../../components/PostForm";
+import Popup from "../../components/Popup";
 
 const DailyJournal = (props) => {
   const [value, onChange] = useState(new Date());
@@ -27,6 +28,7 @@ const DailyJournal = (props) => {
   const [postComments, setPostComments] = useState("");
   const [postDate, setPostDate] = useState(new Date());
   const [journal, setJournal] = useState([]);
+  const [showPopup, setShowPopup] = useState(false);
 
   const handleFiltersClear = () => {
     onChange(new Date());
@@ -38,6 +40,8 @@ const DailyJournal = (props) => {
       ...prevState,
       { postTitle, postComments, postDate },
     ]);
+    setShowPopup(true);
+    setTimeout(() => setShowPopup(false), 2000);
   };
 
   const handleRemovePost = (id) => {
@@ -52,12 +56,14 @@ const DailyJournal = (props) => {
 
   return (
     <MainLayout title="Daily Journal">
+      {showPopup ? <Popup message="Post added successfully!" /> : null}
+
       <section className="section">
         <h4 className="section_title">
           <CalendarIcon className="icon-small" />
           <span>Filter</span>
         </h4>
-        <div className="section_content">
+        <div className="row">
           <div className="col-3">
             <CalendarInput value={value} onChange={onChange} />
           </div>
