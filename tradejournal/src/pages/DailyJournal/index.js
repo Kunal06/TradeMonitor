@@ -16,7 +16,7 @@ import Journal from "../../components/Journal";
 import PostForm from "../../components/PostForm";
 import Popup from "../../components/Popup";
 import { useDispatch, useSelector } from "react-redux";
-import { addPostStart } from "../../redux/Posts/posts.actions";
+import { addPostStart, fetchPostsStart } from "../../redux/Posts/posts.actions";
 
 const mapState = ({ posts, user }) => ({
     posts: posts.posts,
@@ -41,7 +41,7 @@ const DailyJournal = (props) => {
 
     const handleSubmit = (postTitle, postComments, postDate) => {
         const post = { postTitle, postComments, postDate };
-        dispatch(addPostStart(post));
+        dispatch(addPostStart({ post, uid: user.id }));
         setShowPopup(true);
         setTimeout(() => setShowPopup(false), 2000);
     };

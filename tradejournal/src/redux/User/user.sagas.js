@@ -2,6 +2,7 @@ import { takeLatest, put, call, all } from "redux-saga/effects";
 import userTypes from "./user.types";
 import { signInSuccess, signOutSuccess } from "./user.actions";
 import { auth, handleUserProfile, getCurrentUser } from "../../firebase/utils";
+import firebase from "firebase/app";
 
 export function* getSnapshotFromUserAuth(user, additionalData = {}) {
     try {
@@ -23,7 +24,11 @@ export function* getSnapshotFromUserAuth(user, additionalData = {}) {
 
 export function* emailSignIn({ payload: { email, password } }) {
     try {
-        const { user } = yield auth.signInWithEmailAndPassword(email, password);
+        const { user } = yield auth
+            .setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+            .then(() => {
+                return auth.signInWithEmailAndPassword(email, password);
+            });
         yield getSnapshotFromUserAuth(user);
     } catch (err) {
         console.log(err);
@@ -40,7 +45,7 @@ export function* isUserAuthenticated() {
         if (!userAuth) return;
         yield getSnapshotFromUserAuth(userAuth);
     } catch (err) {
-        console.log(err.message);
+        // console.log(err.message);
     }
 }
 
@@ -66,6 +71,7 @@ export function* onSignUpUserStart() {
 }
 
 export function* signOut() {
+    yield auth.signOut();
     yield put(signOutSuccess());
 }
 
