@@ -11,14 +11,11 @@ export const firestore = firebase.firestore();
 export const handleUserProfile = async ({ userAuth, additionalData }) => {
     if (!userAuth) return;
     const { uid } = userAuth;
-
     const userRef = firestore.doc(`users/${uid}`);
     const snapshot = await userRef.get();
-
     if (!snapshot.exists) {
         const { name, email } = userAuth;
         const timestamp = new Date();
-
         try {
             await userRef.set({
                 email,
@@ -32,7 +29,6 @@ export const handleUserProfile = async ({ userAuth, additionalData }) => {
     }
     return userRef;
 };
-
 export const getCurrentUser = () => {
     return new Promise((resolve, reject) => {
         auth.onAuthStateChanged((userAuth) => {
@@ -40,6 +36,9 @@ export const getCurrentUser = () => {
         }, reject);
     });
 };
+
+export const getUserId = () => auth.currentUser;
+
 export const addPostToDb = (post, uid) => {
     firestore.collection("users").doc(uid).collection("posts").doc().set(post);
 };
@@ -54,8 +53,20 @@ export const fetchPosts = async (uid) => {
         .then((docs) =>
             docs.forEach((doc) => {
                 const data = doc.data();
-                posts.push({ ...data, id: doc.id });
+                posts.push({
+                    ...data,
+                    id: doc.id,
+                    postDate: data.postDate.toDate(),
+                });
             })
         );
     return posts;
 };
+
+export const editPost = (uid, doc, data) =>
+    firestore
+        .collection("users")
+        .doc(uid)
+        .collection("posts")
+        .doc(doc)
+        .update(data);

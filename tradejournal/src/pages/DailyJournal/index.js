@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "./style.scss";
-
 // Layouts
 import MainLayout from "../../layouts/main.js";
 // Icons
 import { ReactComponent as CalendarIcon } from "../../assets/calendar.svg";
 import { ReactComponent as AddIcon } from "../../assets/add.svg";
-import { ReactComponent as JournalIcon } from "../../assets/journal.svg";
-
 // Components
 import Input from "../../components/Input";
 import Button from "../../components/Button";
@@ -25,43 +22,31 @@ const mapState = ({ posts, user }) => ({
 
 const DailyJournal = (props) => {
     const [value, onChange] = useState(new Date());
-    const [search, setSearch] = useState("a");
-
-    const [postTitle, setPostTitle] = useState("");
-    const [postComments, setPostComments] = useState("");
-    const [postDate, setPostDate] = useState(new Date());
+    const [search, setSearch] = useState("");
     const [showPopup, setShowPopup] = useState(false);
     const { posts, user } = useSelector(mapState);
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (posts.length === 0) {
+            dispatch(fetchPostsStart(user.id));
+        }
+    }, [dispatch, posts, user]);
 
     const handleFiltersClear = () => {
         onChange(new Date());
         setSearch("");
     };
-
     const handleSubmit = (postTitle, postComments, postDate) => {
         const post = { postTitle, postComments, postDate };
         dispatch(addPostStart({ post, uid: user.id }));
         setShowPopup(true);
         setTimeout(() => setShowPopup(false), 2000);
     };
-
     const handleRemovePost = (id) => {};
-
-    // const handleRemovePost = (id) => {
-    //     // console.log(" Journal Posts - ", id, journal);
-    //     // console.log(
-    //     //   "Filter Remove - ",
-    //     //   journal.filter((el) => el !== id)
-    //     // );
-    //     setJournal((prevState) => prevState.filter((el) => el === id));
-    //     // setJournal((prevState) => prevState.filter((el) => el === id));
-    // };
-
     return (
         <MainLayout title="Daily Journal">
             {showPopup ? <Popup message="Post added successfully!" /> : null}
-
             <section className="section">
                 <h4 className="section_title">
                     <CalendarIcon className="icon-small" />
@@ -86,7 +71,6 @@ const DailyJournal = (props) => {
                     />
                 </div>
             </section>
-
             <section className="section">
                 <h4 className="section_title">
                     <AddIcon className="icon-small" />
@@ -102,5 +86,4 @@ const DailyJournal = (props) => {
         </MainLayout>
     );
 };
-
 export default DailyJournal;
