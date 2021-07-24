@@ -7,7 +7,7 @@ const mapState = ({ user }) => ({
 });
 const AuthRoute = ({ component: Component, ...rest }) => {
     const { currentUser } = useSelector(mapState);
-    console.log("CURRENT USER - ", currentUser);
+
     return (
         <Route
             {...rest}
