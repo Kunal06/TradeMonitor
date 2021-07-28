@@ -14,6 +14,7 @@ import PostForm from "../../components/PostForm";
 import Popup from "../../components/Popup";
 import { useDispatch, useSelector } from "react-redux";
 import { addPostStart, fetchPostsStart } from "../../redux/Posts/posts.actions";
+import Loader from "../../components/Loader";
 
 const mapState = ({ posts, user }) => ({
     posts: posts.posts,
@@ -37,6 +38,7 @@ const DailyJournal = (props) => {
         onChange(new Date());
         setSearch("");
     };
+
     const handleSubmit = (postTitle, postComments, postDate) => {
         const post = { postTitle, postComments, postDate };
         dispatch(addPostStart({ post, uid: user.id }));
