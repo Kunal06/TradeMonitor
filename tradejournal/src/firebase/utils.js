@@ -43,7 +43,7 @@ export const addPostToDb = (post, uid) => {
     firestore.collection("users").doc(uid).collection("posts").doc().set(post);
 };
 
-export const fetchPosts = async (uid, dateRange = []) => {
+export const fetchPosts = async (uid, dateRange = [], search) => {
     const posts = [];
     const [start, end] = dateRange;
     let ref = firestore.collection("users").doc(uid).collection("posts");
@@ -62,11 +62,19 @@ export const fetchPosts = async (uid, dateRange = []) => {
     await ref.get().then((docs) =>
         docs.forEach((doc) => {
             const data = doc.data();
-            posts.push({
-                ...data,
-                id: doc.id,
-                postDate: data.postDate.toDate(),
-            });
+            if (search) {
+                if (data.postTitle.toLowerCase().includes(search.toLowerCase()))
+                    posts.push({
+                        ...data,
+                        id: doc.id,
+                        postDate: data.postDate.toDate(),
+                    });
+            } else
+                posts.push({
+                    ...data,
+                    id: doc.id,
+                    postDate: data.postDate.toDate(),
+                });
         })
     );
     return posts;
