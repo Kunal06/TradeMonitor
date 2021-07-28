@@ -1,27 +1,65 @@
 .quill {
-  z-index: 150;
-  position: relative;
-  border: none;
-  border-radius: 5px;
+    z-index: 150;
+    position: relative;
+    border: none;
+    border-radius: 5px;
 
-  .ql-toolbar {
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-  }
+    .ql-toolbar {
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+    }
 
-  .ql-container {
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-  }
+    .ql-container {
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+    }
 
-  .ql-snow .ql-stroke {
-    stroke: var(--text);
-  }
-  .ql-snow .ql-picker-options {
-    background: var(--secondary);
-  }
+    .ql-snow .ql-stroke {
+        stroke: var(--text);
+    }
+    .ql-snow .ql-picker-options {
+        background: var(--secondary);
+    }
 
-  .ql-editor {
-    min-height: 300px;
-  }
+    .ql-editor {
+        min-height: 300px;
+    }
+}
+
+.form {
+    position: relative;
+}
+
+.loading {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 5px;
+    transform: translateY(300%);
+    .loading_bar {
+        width: 0%;
+        height: 100%;
+        transition: all 0.3s ease;
+    }
+
+    .loading-success {
+        background: var(--success);
+        animation: fillIn 1s ease-in;
+        width: 100%;
+    }
+
+    .loading-error {
+        background: red;
+        width: 100%;
+    }
+
+    @keyframes fillIn {
+        from {
+            width: 0%;
+        }
+        to {
+            width: 100%;
+        }
+    }
 }

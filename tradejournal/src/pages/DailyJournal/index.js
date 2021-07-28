@@ -14,7 +14,6 @@ import PostForm from "../../components/PostForm";
 import Popup from "../../components/Popup";
 import { useDispatch, useSelector } from "react-redux";
 import { addPostStart, fetchPostsStart } from "../../redux/Posts/posts.actions";
-import Loader from "../../components/Loader";
 
 const mapState = ({ posts, user }) => ({
     posts: posts.posts,
@@ -22,7 +21,7 @@ const mapState = ({ posts, user }) => ({
 });
 
 const DailyJournal = (props) => {
-    const [value, onChange] = useState(new Date());
+    const [value, onChange] = useState([new Date(), new Date()]);
     const [search, setSearch] = useState("");
     const [showPopup, setShowPopup] = useState(false);
     const { posts, user } = useSelector(mapState);
@@ -30,14 +29,17 @@ const DailyJournal = (props) => {
 
     useEffect(() => {
         if (posts.length === 0) {
-            dispatch(fetchPostsStart(user.id));
+            dispatch(fetchPostsStart({ user: user.id, dateRange: value }));
         }
-    }, [dispatch, posts, user]);
+    }, [dispatch, user]);
 
     const handleFiltersClear = () => {
-        onChange(new Date());
+        onChange([new Date(), new Date()]);
         setSearch("");
     };
+
+    const handleFilterSubmit = () =>
+        dispatch(fetchPostsStart({ user: user.id, dateRange: value }));
 
     const handleSubmit = (postTitle, postComments, postDate) => {
         const post = { postTitle, postComments, postDate };
@@ -66,16 +68,17 @@ const DailyJournal = (props) => {
                     <div className="col-3">
                         <Input
                             value={search}
-                            placeholder="Search your journal"
+                            placeholder="Search your journal by title"
                             handler={(e) => setSearch(e.target.value)}
                         />
                     </div>
-                    <Button value="Filter" />
+                    <Button handler={handleFilterSubmit}>Filter </Button>
                     <Button
-                        value="Clear"
                         btnStyle="btn--unstyled"
                         handler={handleFiltersClear}
-                    />
+                    >
+                        Clear
+                    </Button>
                 </div>
             </section>
             <section className="section">
@@ -83,7 +86,11 @@ const DailyJournal = (props) => {
                     <AddIcon className="icon-small" />
                     <span>Add Post</span>
                 </h4>
-                <PostForm handler={handleSubmit} />
+                <PostForm handler={handleSubmit}>
+                    <Button type="submit" btnStyle="btn--submit">
+                        <AddIcon className="icon-small icon-white" /> Create
+                    </Button>
+                </PostForm>
             </section>
             <Journal
                 posts={posts}
