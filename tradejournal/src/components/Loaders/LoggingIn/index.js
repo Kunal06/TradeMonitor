@@ -1,12 +1,11 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import "./style.scss";
-
 const mapState = ({ user }) => ({
     isLoading: user.isLoading,
 });
 
-const Loader = ({ show, message }) => {
+const LoggingIn = ({ show, message }) => {
     const { isLoading } = useSelector(mapState);
     return (
         <>
@@ -24,4 +23,4 @@ const Loader = ({ show, message }) => {
     );
 };
 
-export default Loader;
+export default LoggingIn;
