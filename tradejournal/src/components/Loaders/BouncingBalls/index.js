@@ -16,7 +16,7 @@ const BoucingBalls = () => {
         },
     };
 
-    const loadingCricle = {
+    const loadingCircle = {
         start: {
             y: "0%",
         },
@@ -40,17 +40,17 @@ const BoucingBalls = () => {
         >
             <motion.span
                 className="load_circle"
-                variants={loadingCricle}
+                variants={loadingCircle}
                 transition={loadingCircleTransition}
             />
             <motion.span
                 className="load_circle"
-                variants={loadingCricle}
+                variants={loadingCircle}
                 transition={loadingCircleTransition}
             />
             <motion.span
                 className="load_circle"
-                variants={loadingCricle}
+                variants={loadingCircle}
                 transition={loadingCircleTransition}
             />
         </motion.div>
