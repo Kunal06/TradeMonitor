@@ -18,9 +18,14 @@ as if they happened in your own browser. Instead of guessing why errors happen,
 */
 import rootReducer from "./rootReducer";
 import rootSaga from "./rootSaga";
+/*
+Redux Thunk is middleware that allows you to return functions, rather than just actions, within Redux. This allows for delayed actions, including working with promises
+Thunk allows us to dispatch those actions asynchronously and resolve each promise that gets returned
+*/
+import thunk from "redux-thunk";
 
 const sagaMiddleware = createSagaMiddle();
-export const middlewares = [sagaMiddleware, logger];
+export const middlewares = [sagaMiddleware, logger, thunk];
 
 export const store = createStore(rootReducer, applyMiddleware(...middlewares));
 sagaMiddleware.run(rootSaga);
