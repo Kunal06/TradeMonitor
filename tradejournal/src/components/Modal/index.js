@@ -46,7 +46,9 @@ const Modal = ({ show, loading, done, confirm, cancel }) => {
                         ) : (
                             <div className="modal_content">
                                 <div className="modal_body">
-                                    <span className="load_text">Deleting </span>
+                                    <span className="load_text">
+                                        Please wait
+                                    </span>
                                     <div className="circle">
                                         {!done ? <BoucingBalls /> : <Success />}
                                     </div>

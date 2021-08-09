@@ -94,6 +94,7 @@ const DailyJournal = (props) => {
             </section>
             <Journal
                 posts={posts}
+                user={user}
                 title="Trading Journal"
                 removePost={handleRemovePost}
             />

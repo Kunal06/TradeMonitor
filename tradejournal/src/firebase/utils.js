@@ -87,3 +87,11 @@ export const editPost = (uid, doc, data) =>
         .collection("posts")
         .doc(doc)
         .update(data);
+
+export const deletePostInDb = (uid, doc) =>
+    firestore
+        .collection("users")
+        .doc(uid)
+        .collection("posts")
+        .doc(doc)
+        .delete();
