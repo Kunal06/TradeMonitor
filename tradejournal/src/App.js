@@ -11,6 +11,7 @@ import { checkUserSession, isLoading } from "./redux/User/user.actions";
 import AuthRoute from "./hoc/AuthRoute";
 // import Loader from "./components/Loader";
 import LoggingIn from "./components/Loaders/LoggingIn";
+import LoadingScreen from "./components/Loaders/LoadingScreen";
 
 function App() {
     const dispatch = useDispatch();
@@ -23,6 +24,7 @@ function App() {
     return (
         <div className="dark_theme" id="app">
             {/* <Loader /> */}
+            <LoadingScreen />
             <LoggingIn />
             <Switch>
                 <AuthRoute exact path="/dashboard" component={Dashboard} />

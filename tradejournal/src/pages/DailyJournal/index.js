@@ -17,14 +17,14 @@ import { addPostStart, fetchPostsStart } from "../../redux/Posts/posts.actions";
 
 const mapState = ({ posts, user }) => ({
     posts: posts.posts,
+    showPopup: posts.showPopup,
     user: user.currentUser,
 });
 
 const DailyJournal = (props) => {
     const [value, onChange] = useState([new Date(), new Date()]);
     const [search, setSearch] = useState("");
-    const [showPopup, setShowPopup] = useState(false);
-    const { posts, user } = useSelector(mapState);
+    const { posts, user, showPopup } = useSelector(mapState);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -44,8 +44,6 @@ const DailyJournal = (props) => {
     const handleSubmit = (postTitle, postComments, postDate) => {
         const post = { postTitle, postComments, postDate };
         dispatch(addPostStart({ post, uid: user.id }));
-        setShowPopup(true);
-        setTimeout(() => setShowPopup(false), 2000);
     };
     const handleRemovePost = (id) => {};
     return (

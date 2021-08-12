@@ -9,4 +9,5 @@ const Button = ({ handler, btnStyle, ...otherProps }) => {
         </button>
     );
 };
+
 export default Button;

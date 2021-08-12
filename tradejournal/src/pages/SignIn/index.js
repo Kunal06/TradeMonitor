@@ -67,7 +67,9 @@ const SignIn = (props) => {
                         />
                     </div>
                     <div className="row row-center mt-2">
-                        <Button value="Sign In" type="submit" />
+                        <Button value="Sign In" type="submit">
+                            Sign In
+                        </Button>
                     </div>
                 </form>
             </AuthLayout>
