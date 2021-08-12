@@ -15,5 +15,10 @@
 
     .popup_message {
         margin-left: 10px;
+        color: var(--success);
+    }
+
+    .popup_message-red {
+        color: red !important;
     }
 }

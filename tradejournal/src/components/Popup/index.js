@@ -23,12 +23,20 @@ const Popup = ({ message }) => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                     >
-                        <p className="popup_content">
+                        <div className="popup_content">
                             <ResultIcon
                                 result={errors.length > 0 ? true : false}
                             />
-                            <span className="popup_message">{message}</span>
-                        </p>
+                            <span
+                                className={
+                                    errors.length > 0
+                                        ? "popup_message-red popup_message"
+                                        : "popup_message"
+                                }
+                            >
+                                {message}
+                            </span>
+                        </div>
                     </motion.div>
                 </AnimatePresence>
             ) : null}
