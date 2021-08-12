@@ -3,7 +3,7 @@ import "./style.scss";
 
 import { ReactComponent as CheckMark } from "../../assets/check-mark.svg";
 import { useSelector } from "react-redux";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import ResultIcon from "../Loaders/ResultIcon";
 
 const mapState = ({ posts }) => ({
@@ -16,29 +16,25 @@ const Popup = ({ message }) => {
     return (
         <>
             {showPopup ? (
-                <AnimatePresence>
-                    <motion.div
-                        className="popup"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                    >
-                        <div className="popup_content">
-                            <ResultIcon
-                                result={errors.length > 0 ? true : false}
-                            />
-                            <span
-                                className={
-                                    errors.length > 0
-                                        ? "popup_message-red popup_message"
-                                        : "popup_message"
-                                }
-                            >
-                                {message}
-                            </span>
-                        </div>
-                    </motion.div>
-                </AnimatePresence>
+                <motion.div
+                    className="popup"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                >
+                    <div className="popup_content">
+                        <ResultIcon result={errors.length > 0 ? true : false} />
+                        <span
+                            className={
+                                errors.length > 0
+                                    ? "popup_message-red popup_message"
+                                    : "popup_message"
+                            }
+                        >
+                            {message}
+                        </span>
+                    </div>
+                </motion.div>
             ) : null}
         </>
     );

@@ -43,6 +43,8 @@ const postReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 isLoading: !state.isLoading,
+                showPopup: false,
+                errors: [],
             };
         }
         case postsTypes.SHOW_POPUP: {
