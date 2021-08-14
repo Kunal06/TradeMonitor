@@ -49,6 +49,7 @@ ol {
 
 .app {
     position: relative;
+    min-height: calc(100vh - 50px);
 }
 
 .list-unstyled {
