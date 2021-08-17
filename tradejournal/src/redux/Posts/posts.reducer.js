@@ -5,6 +5,7 @@ const INITIAL_STATE = {
     errors: [],
     isLoading: false,
     showPopup: false,
+    popupMessage: "",
 };
 const postReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
@@ -52,6 +53,7 @@ const postReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 showPopup: !state.showPopup,
+                popupMessage: action.payload,
             };
         }
         case postTypes.DELETE_POST_SUCCESS: {

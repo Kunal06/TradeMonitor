@@ -1,18 +1,18 @@
 import React from "react";
 import "./style.scss";
 
-import { ReactComponent as CheckMark } from "../../assets/check-mark.svg";
 import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import ResultIcon from "../Loaders/ResultIcon";
 
 const mapState = ({ posts }) => ({
     showPopup: posts.showPopup,
+    popupMessage: posts.popupMessage,
     errors: posts.errors,
 });
 
-const Popup = ({ message }) => {
-    const { showPopup, errors } = useSelector(mapState);
+const Popup = () => {
+    const { showPopup, errors, popupMessage } = useSelector(mapState);
     return (
         <>
             {showPopup ? (
@@ -31,7 +31,9 @@ const Popup = ({ message }) => {
                                     : "popup_message"
                             }
                         >
-                            {message}
+                            {errors.length > 0
+                                ? "Something went wrong"
+                                : popupMessage}
                         </span>
                     </div>
                 </motion.div>

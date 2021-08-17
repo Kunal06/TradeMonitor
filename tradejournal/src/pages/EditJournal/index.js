@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { updatePostStart } from "../../redux/Posts/posts.actions";
 import Button from "../../components/Button";
-import Popup from "../../components/Popup";
 
 const mapState = ({ posts }) => ({
     posts: posts.posts,
@@ -32,13 +31,6 @@ const EditJournal = (props) => {
 
     return (
         <MainLayout title="Edit Your Post">
-            <Popup
-                message={
-                    errors.length > 0
-                        ? "Something went wrong."
-                        : "Post edited successfully. You can go back to journal."
-                }
-            />
             <section className="section">
                 <h4 className="section_title">
                     <EditIcon className="icon-small" />

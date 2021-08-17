@@ -9,28 +9,26 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { checkUserSession, isLoading } from "./redux/User/user.actions";
 import AuthRoute from "./hoc/AuthRoute";
-// import Loader from "./components/Loader";
 import LoggingIn from "./components/Loaders/LoggingIn";
 import LoadingScreen from "./components/Loaders/LoadingScreen";
 import { AnimatePresence } from "framer-motion";
+import Popup from "./components/Popup";
 
 function App() {
     const dispatch = useDispatch();
     const location = useLocation();
-
     useEffect(() => {
         dispatch(isLoading());
         dispatch(checkUserSession());
     }, [dispatch]);
-
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [location]);
-
     return (
         <div className="app" id="app">
             <LoadingScreen />
             <LoggingIn />
+            <Popup />
             <AnimatePresence>
                 <Switch location={location}>
                     <AuthRoute exact path="/dashboard" component={Dashboard} />
@@ -40,7 +38,6 @@ function App() {
                         path="/edit-journal/:id"
                         component={EditJournal}
                     />
-
                     <Route exact path="/signup" render={() => <SignUp />} />
                     <Route exact path="/signin" render={() => <SignIn />} />
                     <Route exact path="*">
