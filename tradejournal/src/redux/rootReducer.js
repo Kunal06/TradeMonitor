@@ -4,9 +4,9 @@ import postsReducer from "./Posts/posts.reducer";
 import modalReducer from "./Modal/modal.reducer";
 
 const rootReducer = combineReducers({
-    user: userReducer,
-    posts: postsReducer,
-    modal: modalReducer,
+  user: userReducer,
+  posts: postsReducer,
+  modal: modalReducer,
 });
 
 export default rootReducer;

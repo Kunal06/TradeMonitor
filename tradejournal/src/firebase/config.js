@@ -1,8 +1,8 @@
 export const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.REACT_APP_FIREBASE__PROJECTID,
-  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  apiKey: "AIzaSyDOmsl1FJiNGcI_dbCqDIezPnmmh1XKGns",
+  authDomain: "trading-journal-948a7.firebaseapp.com",
+  projectId: "trading-journal-948a7",
+  storageBucket: "trading-journal-948a7.appspot.com",
+  messagingSenderId: "812735562363",
+  appId: "1:812735562363:web:f130462ee19878577358de",
 };

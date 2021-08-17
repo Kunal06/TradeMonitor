@@ -8,7 +8,7 @@ const Card = ({ title, balance, subValue }) => {
         <div className="card_col">
           <p className="card_text">{title}</p>
           <p className="card_text">
-            <strong>{balance}</strong>
+            <strong>${balance}</strong>
           </p>
           <p className="card_text">{subValue}</p>
         </div>

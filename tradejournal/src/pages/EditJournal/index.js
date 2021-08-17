@@ -10,43 +10,41 @@ import { updatePostStart } from "../../redux/Posts/posts.actions";
 import Button from "../../components/Button";
 
 const mapState = ({ posts }) => ({
-    posts: posts.posts,
-    errors: posts.errors,
-    postLoading: posts.isLoading,
+  posts: posts.posts,
 });
 
 const EditJournal = (props) => {
-    const { posts, errors, isLoading } = useSelector(mapState);
-    const { id } = useParams();
-    const post = posts.find((el) => el.id === id);
-    const dispatch = useDispatch();
-    const history = useHistory();
+  const { posts } = useSelector(mapState);
+  const { id } = useParams();
+  const post = posts.find((el) => el.id === id);
+  const dispatch = useDispatch();
+  const history = useHistory();
 
-    const handleSubmit = (postTitle, postComments, postDate, tags) => {
-        const newPost = { postTitle, postComments, postDate, tags };
-        dispatch(updatePostStart({ post: newPost, doc: id }));
-    };
+  const handleSubmit = (postTitle, postComments, postDate, tags) => {
+    const newPost = { postTitle, postComments, postDate, tags };
+    dispatch(updatePostStart({ post: newPost, doc: id }));
+  };
 
-    const handleReturn = () => history.push("/journal");
+  const handleReturn = () => history.push("/journal");
 
-    return (
-        <MainLayout title="Edit Your Post">
-            <section className="section">
-                <h4 className="section_title">
-                    <EditIcon className="icon-small" />
-                    <span>Edit Your Post - {post.postTitle}</span>
-                </h4>
-                <PostForm handler={handleSubmit} post={post}>
-                    <Button type="submit" btnStyle="btn--submit">
-                        Save Changes
-                    </Button>
-                    <Button btnStyle="btn--unstyled" handler={handleReturn}>
-                        Back to journal
-                    </Button>
-                </PostForm>
-            </section>
-        </MainLayout>
-    );
+  return (
+    <MainLayout title="Edit Your Post">
+      <section className="section">
+        <h4 className="section_title">
+          <EditIcon className="icon-small" />
+          <span>Edit Your Post - {post.postTitle}</span>
+        </h4>
+        <PostForm handler={handleSubmit} post={post}>
+          <Button type="submit" btnStyle="btn--submit">
+            Save Changes
+          </Button>
+          <Button btnStyle="btn--unstyled" handler={handleReturn}>
+            Back to journal
+          </Button>
+        </PostForm>
+      </section>
+    </MainLayout>
+  );
 };
 
 export default EditJournal;

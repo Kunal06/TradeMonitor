@@ -1,34 +1,37 @@
 .btn {
-    border: none;
-    padding: 10px 20px;
-    margin: 0 12px;
-    background: var(--button);
-    color: var(--text-white);
-    border-radius: 5px;
-    cursor: pointer;
-    outline: none;
-    transition: 0.3s ease;
-    display: flex;
-    align-items: center;
+  border: none;
+  padding: 10px 20px;
+  margin: 0 12px;
+  background: var(--button);
+  color: var(--text-white);
+  border-radius: 5px;
+  cursor: pointer;
+  outline: none;
+  transition: 0.3s ease;
+  display: flex;
+  align-items: center;
 
-    &:hover {
-        opacity: 0.8;
-    }
-    &:disabled {
-        background: none;
-        &:hover {
-            opacity: 1;
-        }
-    }
-}
-.btn--unstyled {
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &:disabled {
     background: none;
+    &:hover {
+      opacity: 1;
+    }
+  }
 }
+
+.btn--unstyled {
+  background: none;
+}
+
 .btn--submit {
-    background: var(--success);
+  background: var(--success);
 }
 
 .btn--remove {
-    padding: 0;
-    margin: 0 5px 0 10px;
+  padding: 0;
+  margin: 0 5px 0 10px;
 }

@@ -37,13 +37,17 @@ const Post = ({ data, removePost, ...otherProps }) => {
                     className="icon-small icon-btn"
                     onClick={() => removePost(data.id)}
                 />
-                <ul className="post_tags list-unstyled tags">
-                    {data.tags.map((el, id) => (
-                        <li className="tag" key={id}>
-                            <span className="tag_value">#{el}</span>
-                        </li>
-                    ))}
-                </ul>
+                {data.tags ? (
+                    <ul className="post_tags list-unstyled tags">
+                        {data.tags.map((el, id) => (
+                            <li className="tag" key={id}>
+                                <span className="tag_value">#{el}</span>
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <div></div>
+                )}
             </div>
         </motion.section>
     );

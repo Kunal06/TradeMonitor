@@ -1,26 +1,25 @@
 .icon {
-    fill: var(--text);
-    width: 1.8rem;
-    height: 1.8rem;
-    margin-right: 10px;
+  fill: var(--text);
+  width: 1.8rem;
+  height: 1.8rem;
+  margin-right: 10px;
 }
 
 .icon-small {
-    @extend .icon;
-    height: 1rem;
-    width: 1rem;
-    margin-right: 15px;
+  @extend .icon;
+  height: 1rem;
+  width: 1rem;
+  margin-right: 15px;
 }
-
 .icon-btn {
-    fill: var(--button);
-    cursor: pointer;
+  fill: var(--button);
+  cursor: pointer;
 }
 
 .icon-success {
-    fill: var(--success);
+  fill: var(--success);
 }
 
 .icon-white {
-    fill: var(--text-light);
+  fill: var(--text-light);
 }
