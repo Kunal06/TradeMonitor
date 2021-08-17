@@ -19,6 +19,7 @@ const postReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 posts: [...action.payload],
+                isLoading: false,
             };
         case postsTypes.UPDATE_POST_SUCCESS: {
             const clone = [...state.posts];

@@ -3,9 +3,11 @@ import "./style.scss";
 
 // Layouts
 import MainLayout from "../../layouts/main.js";
+
 // Icons
 import { ReactComponent as CalendarIcon } from "../../assets/calendar.svg";
 import { ReactComponent as AddIcon } from "../../assets/add.svg";
+
 // Components
 import Input from "../../components/Input";
 import Button from "../../components/Button";
@@ -19,6 +21,7 @@ import {
     fetchPostsStart,
     postLoading,
 } from "../../redux/Posts/posts.actions";
+import InputTag from "../../components/InputTags";
 
 const mapState = ({ posts, user }) => ({
     posts: posts.posts,
@@ -29,7 +32,7 @@ const mapState = ({ posts, user }) => ({
 
 const DailyJournal = (props) => {
     const [value, onChange] = useState([new Date(), new Date()]);
-    const [search, setSearch] = useState("");
+    const [tags, setTags] = useState([]);
     const { posts, user, errors, loading } = useSelector(mapState);
     const dispatch = useDispatch();
     const journalRef = useRef(null);
@@ -42,20 +45,24 @@ const DailyJournal = (props) => {
 
     const handleFiltersClear = () => {
         onChange([new Date(), new Date()]);
-        setSearch("");
+        setTags("");
     };
+
+    const handleSearchInput = (tags) => setTags(tags);
 
     const handleFilterSubmit = () => {
         dispatch(postLoading());
-        dispatch(fetchPostsStart({ user: user.id, dateRange: value, search }));
+        dispatch(
+            fetchPostsStart({ user: user.id, dateRange: value, search: tags })
+        );
         if (!loading) journalRef.current.scrollIntoView({ behavior: "smooth" });
     };
 
-    const handleSubmit = (postTitle, postComments, postDate) => {
-        const post = { postTitle, postComments, postDate };
+    const handleSubmit = (postTitle, postComments, postDate, tags) => {
+        const post = { postTitle, postComments, postDate, tags };
         dispatch(addPostStart({ post, uid: user.id }));
     };
-    const handleRemovePost = (id) => {};
+
     return (
         <MainLayout title="Daily Journal">
             <Popup
@@ -80,10 +87,15 @@ const DailyJournal = (props) => {
                         />
                     </div>
                     <div className="col-3">
-                        <Input
-                            value={search}
-                            placeholder="Search your journal by title"
-                            handler={(e) => setSearch(e.target.value)}
+                        {/* <Input
+              value={search}
+              placeholder="Search your journal by tags"
+              handler={(e) => setSearch(e.target.value)}
+            /> */}
+                        <InputTag
+                            defaultTags={tags}
+                            onChange={handleSearchInput}
+                            limit={3}
                         />
                     </div>
                     <Button handler={handleFilterSubmit}>Filter </Button>
@@ -95,6 +107,7 @@ const DailyJournal = (props) => {
                     </Button>
                 </div>
             </section>
+
             <section className="section">
                 <h4 className="section_title">
                     <AddIcon className="icon-small" />
@@ -109,10 +122,10 @@ const DailyJournal = (props) => {
             <Journal
                 posts={posts}
                 title="Trading Journal"
-                removePost={handleRemovePost}
                 journalRef={journalRef}
             />
         </MainLayout>
     );
 };
+
 export default DailyJournal;

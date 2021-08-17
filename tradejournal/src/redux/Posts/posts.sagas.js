@@ -26,11 +26,14 @@ import postsTypes from "./posts.types";
 export function* addPost({ payload: { post, uid } }) {
     try {
         yield put(postLoading());
-        yield addPostToDb(post, uid);
-        console.log("Add post");
+        const docRef = yield addPostToDb(post, uid);
         yield delay(1000);
-        yield put(addPostSuccess(post));
-        console.log("Pre show popup");
+        yield put(
+            addPostSuccess({
+                id: docRef.id,
+                ...post,
+            })
+        );
         yield put(showPopup());
         yield delay(2000);
         yield put(showPopup());
@@ -51,6 +54,7 @@ export function* getPosts({ payload: { user, dateRange, search } }) {
         console.log(err);
     }
 }
+
 export function* onFetchPostsStart() {
     yield takeLatest(postsTypes.FETCH_POSTS_START, getPosts);
 }

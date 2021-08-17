@@ -1,5 +1,6 @@
 import React from "react";
 import "./style.scss";
+
 import MainLayout from "../../layouts/main.js";
 import { ReactComponent as EditIcon } from "../../assets/edit.svg";
 import PostForm from "../../components/PostForm";
@@ -22,11 +23,9 @@ const EditJournal = (props) => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const handleSubmit = (postTitle, postComments, postDate) => {
-        // Edit post in DB
-        const newPost = { postTitle, postComments, postDate };
+    const handleSubmit = (postTitle, postComments, postDate, tags) => {
+        const newPost = { postTitle, postComments, postDate, tags };
         dispatch(updatePostStart({ post: newPost, doc: id }));
-        if (!isLoading && errors.length === 0) history.push("/journal");
     };
 
     const handleReturn = () => history.push("/journal");
@@ -43,7 +42,7 @@ const EditJournal = (props) => {
             <section className="section">
                 <h4 className="section_title">
                     <EditIcon className="icon-small" />
-                    <span>Edit Your Post - {post.postTitle}</span>{" "}
+                    <span>Edit Your Post - {post.postTitle}</span>
                 </h4>
                 <PostForm handler={handleSubmit} post={post}>
                     <Button type="submit" btnStyle="btn--submit">
@@ -57,4 +56,5 @@ const EditJournal = (props) => {
         </MainLayout>
     );
 };
+
 export default EditJournal;

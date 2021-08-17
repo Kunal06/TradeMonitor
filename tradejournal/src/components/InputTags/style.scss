@@ -3,6 +3,7 @@
     flex-wrap: wrap;
     align-items: center;
     position: relative;
+    overflow-y: hidden;
     height: 100%;
     .tag {
         background: var(--button);
