@@ -3,26 +3,26 @@
 @import "./icons";
 
 :root {
-  --button: #1072fb;
-  --text: #aab8c5;
-  --text-light: #eee;
-  --text-white: #fff;
-  --success: #2ec08a;
-  --border: #47515d;
+    --button: #1072fb;
+    --text: #aab8c5;
+    --text-light: #eee;
+    --text-white: #fff;
+    --success: #2ec08a;
+    --border: #47515d;
 
-  --primary: #343a40;
-  --secondary: #3a444e;
-  --aluxury: #464f5b;
-  --primary-dark: #363f49;
-  background: var(--primary);
+    --primary: #343a40;
+    --secondary: #3a444e;
+    --aluxury: #464f5b;
+    --primary-dark: #363f49;
+    background: var(--primary);
 
-  .bg-dark {
-    background: var(--primary-dark);
-  }
+    .bg-dark {
+        background: var(--primary-dark);
+    }
 }
 
 body {
-  background: var(--primary);
+    background: var(--primary);
 }
 
 h1,
@@ -31,204 +31,219 @@ h3,
 h4,
 h5,
 h6 {
-  color: var(--text-white);
-  padding: 20px 0;
+    color: var(--text-white);
+    padding: 20px 0;
 }
 
 * {
-  padding: 0;
-  margin: 0;
-  color: var(--text);
-  font-family: "Nunito", sans-serif;
-  box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    color: var(--text);
+    font-family: "Nunito", sans-serif;
+    box-sizing: border-box;
 }
 
 a {
-  text-decoration: none;
-  // color: var(--text);
-  font-style: inherit;
+    text-decoration: none;
+    // color: var(--text);
+    font-style: inherit;
 }
 
 ul,
 ol {
-  list-style-position: inside;
+    list-style-position: inside;
 }
 
 .app {
-  position: relative;
-  min-height: calc(100vh - 50px);
+    position: relative;
+    min-height: calc(100vh - 50px);
 }
 
 .list-unstyled {
-  list-style: none;
+    list-style: none;
 }
 
 .container {
-  max-width: 1600px;
-  padding: 0 60px;
-  position: relative;
-  margin: 0 auto;
+    max-width: 1600px;
+    padding: 0 60px;
+    position: relative;
+    margin: 0 auto;
 
-  @media screen and (max-width: 1023px) {
-    padding: 0 20px;
-  }
+    @media screen and (max-width: 1023px) {
+        padding: 0 20px;
+    }
 }
 
 // Margins
 
 .mt-1 {
-  margin-top: 20px;
+    margin-top: 20px;
 }
 
 .mt-2 {
-  margin-top: 20px;
+    margin-top: 20px;
 }
 
 .mt-3 {
-  margin-top: 30px;
+    margin-top: 30px;
 }
 
 .mt-4 {
-  margin-top: 40px;
+    margin-top: 40px;
 }
 
 .mt-5 {
-  margin-top: 50px;
+    margin-top: 50px;
 }
 
 // Page
 
 .page_title {
-  padding: 30px 0;
+    padding: 30px 0;
 }
 
 .content {
-  padding-bottom: 100px;
+    padding-bottom: 100px;
 }
 
 // Columns
 
 .col-1 {
-  max-width: 15%;
-  flex: 0 0 15%;
-  padding: 0 10px;
+    max-width: 12%;
+    flex: 0 0 12%;
+    padding: 0 10px;
 
-  @media screen and (max-width: 767px) {
-    max-width: 100%;
-    padding: 0;
-    flex: unset;
-    width: 100%;
-    margin-bottom: 20px;
-  }
+    @media screen and (max-width: 767px) {
+        max-width: 100%;
+        padding: 0;
+        flex: unset;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+}
+
+.col-2 {
+    max-width: 20%;
+    flex: 0 0 20%;
+    padding: 0 10px;
+
+    @media screen and (max-width: 767px) {
+        max-width: 100%;
+        padding: 0;
+        flex: unset;
+        width: 100%;
+        margin-bottom: 20px;
+    }
 }
 
 .col-3 {
-  max-width: 33.3%;
-  flex: 0 0 33%;
-  padding: 0 10px;
+    max-width: 33.3%;
+    flex: 0 0 33%;
+    padding: 0 10px;
 
-  @media screen and (max-width: 767px) {
-    max-width: 100%;
-    padding: 0;
-    flex: unset;
-    width: 100%;
-    margin-bottom: 20px;
-  }
+    @media screen and (max-width: 767px) {
+        max-width: 100%;
+        padding: 0;
+        flex: unset;
+        width: 100%;
+        margin-bottom: 20px;
+    }
 }
 
 .col-4 {
-  flex: 0 0 41%;
-  max-width: 41%;
-  @media screen and (max-width: 767px) {
-    flex: unset;
-    width: 100%;
-    max-width: 100%;
-  }
+    flex: 0 0 41%;
+    max-width: 41%;
+    @media screen and (max-width: 767px) {
+        flex: unset;
+        width: 100%;
+        max-width: 100%;
+    }
 }
 
 .col-5 {
-  flex: 0 0 50%;
-  max-width: 50%;
-  padding: 0 12px;
+    flex: 0 0 50%;
+    max-width: 50%;
+    padding: 0 12px;
 
-  @media screen and (max-width: 767px) {
-    flex: unset;
-    width: 100%;
-    max-width: 100%;
-    padding: 0;
-  }
+    @media screen and (max-width: 767px) {
+        flex: unset;
+        width: 100%;
+        max-width: 100%;
+        padding: 0;
+    }
 }
 
 .col-8 {
-  flex: 0 0 70%;
-  max-width: 70%;
+    flex: 0 0 70%;
+    max-width: 70%;
 }
 
 .col-10 {
-  flex: 0 0 83%;
-  max-width: 83.8%;
+    flex: 0 0 83%;
+    max-width: 83.8%;
 
-  @media screen and (max-width: 767px) {
-    flex: 1 auto;
-    width: 100%;
-    max-width: 100%;
-  }
+    @media screen and (max-width: 767px) {
+        flex: 1 auto;
+        width: 100%;
+        max-width: 100%;
+    }
 }
 
 .col-12 {
-  flex: 0 0 100%;
-  max-width: 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
+    padding: 0 12px;
 }
 
 // Row
 
 .row {
-  display: flex;
-  flex-wrap: wrap;
-  margin-left: -12px;
-  margin-right: -12px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -12px;
+    margin-right: -12px;
 
-  @media screen and (max-width: 767px) {
-    margin: 0;
-  }
+    @media screen and (max-width: 767px) {
+        margin: 0;
+    }
 }
 
 .row-center {
-  justify-content: center;
+    justify-content: center;
 }
 
 // Sections
 
 .section {
-  padding: 35px 30px;
-  background: var(--secondary);
-  border-radius: 5px;
-  margin-bottom: 35px;
+    padding: 35px 30px;
+    background: var(--secondary);
+    border-radius: 5px;
+    margin-bottom: 35px;
 
-  @media screen and (max-width: 767px) {
-    padding: 35px 20px;
-  }
+    @media screen and (max-width: 767px) {
+        padding: 35px 20px;
+    }
 
-  .section_title {
-    padding: 10px;
-    background: var(--aluxury);
-    text-transform: uppercase;
-    font-weight: 700;
-    display: flex;
-    margin-bottom: 20px;
-  }
+    .section_title {
+        padding: 10px;
+        background: var(--aluxury);
+        text-transform: uppercase;
+        font-weight: 700;
+        display: flex;
+        margin-bottom: 20px;
+    }
 }
 
 // Text
 
 .text-center {
-  text-align: center;
+    text-align: center;
 }
 
 .text-bold {
-  font-weight: 600;
+    font-weight: 600;
 }
 
 .text-blue {
-  color: var(--button);
+    color: var(--button);
 }
