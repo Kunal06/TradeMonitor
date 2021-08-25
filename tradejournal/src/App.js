@@ -14,45 +14,43 @@ import LoadingScreen from "./components/Loaders/LoadingScreen";
 import { AnimatePresence } from "framer-motion";
 import Popup from "./components/Popup";
 import MyTrades from "./pages/TradeJournal";
+import AddTrade from "./pages/AddTrade";
 
 function App() {
-    const dispatch = useDispatch();
-    const location = useLocation();
+  const dispatch = useDispatch();
+  const location = useLocation();
 
-    useEffect(() => {
-        dispatch(isLoading());
-        dispatch(checkUserSession());
-    }, [dispatch]);
+  useEffect(() => {
+    dispatch(isLoading());
+    dispatch(checkUserSession());
+  }, [dispatch]);
 
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, [location]);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
 
-    return (
-        <div className="app" id="app">
-            <LoadingScreen />
-            <LoggingIn />
-            <Popup />
-            <AnimatePresence>
-                <Switch location={location}>
-                    <AuthRoute exact path="/dashboard" component={Dashboard} />
-                    <AuthRoute exact path="/journal" component={DailyJournal} />
-                    <AuthRoute
-                        exact
-                        path="/edit-journal/:id"
-                        component={EditJournal}
-                    />
-                    <AuthRoute exact path="/mytrades" component={MyTrades} />
+  return (
+    <div className="app" id="app">
+      <LoadingScreen />
+      <LoggingIn />
+      <Popup />
+      <AnimatePresence>
+        <Switch location={location}>
+          <AuthRoute exact path="/dashboard" component={Dashboard} />
+          <AuthRoute exact path="/journal" component={DailyJournal} />
+          <AuthRoute exact path="/edit-journal/:id" component={EditJournal} />
+          <AuthRoute exact path="/mytrades" component={MyTrades} />
+          <AuthRoute exact path="/import" component={AddTrade} />
 
-                    <Route exact path="/signup" render={() => <SignUp />} />
-                    <Route exact path="/signin" render={() => <SignIn />} />
-                    <Route exact path="*">
-                        <Redirect to="/dashboard" />
-                    </Route>
-                </Switch>
-            </AnimatePresence>
-        </div>
-    );
+          <Route exact path="/signup" render={() => <SignUp />} />
+          <Route exact path="/signin" render={() => <SignIn />} />
+          <Route exact path="*">
+            <Redirect to="/dashboard" />
+          </Route>
+        </Switch>
+      </AnimatePresence>
+    </div>
+  );
 }
 
 export default App;
