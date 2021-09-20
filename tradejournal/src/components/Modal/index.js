@@ -18,7 +18,7 @@ const Modal = ({ show, loading, done, confirm, cancel, error }) => {
         >
           <div className="modal_content">
             <div className="modal_header">
-              <h3>Delete Post</h3>
+              <h3>Delete </h3>
               <Button
                 className="modal_exit"
                 onClick={cancel}
@@ -29,9 +29,7 @@ const Modal = ({ show, loading, done, confirm, cancel, error }) => {
             </div>
             <div className="modal_body">
               {!loading ? (
-                <motion.span>
-                  Are you sure you want to delete this post?
-                </motion.span>
+                <motion.span>Are you sure you want to delete this?</motion.span>
               ) : (
                 <>
                   <span className="load_text">Please wait </span>
@@ -50,7 +48,7 @@ const Modal = ({ show, loading, done, confirm, cancel, error }) => {
                 Cancel
               </Button>
               <Button handler={confirm} disabled={loading}>
-                Delete Post
+                Delete
               </Button>
             </div>
           </div>

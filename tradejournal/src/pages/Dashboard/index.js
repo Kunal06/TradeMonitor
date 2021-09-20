@@ -71,11 +71,25 @@ const Dashboard = (props) => {
       }));
 
       const today = new Date();
-      const firstDay = `${today.getFullYear()}-${today.getMonth() + 1}-1`;
+      const lastMonthTrade = balance.dates[balance.dates.length - 1].split("-");
+      lastMonthTrade[2] = "1";
+      const firstDay = lastMonthTrade.join("-");
       const firstDayIndex = balance.dates.findIndex((date) => date >= firstDay);
       const monthlyPln =
-        balance.balance[balance.balance.length - 1] -
-        balance.balance[firstDayIndex];
+        firstDayIndex !== 0
+          ? balance.balance[balance.balance.length - 1] -
+            balance.balance[firstDayIndex - 1]
+          : balance.balance[balance.balance.length - 1] - balance.balance[0];
+
+      const monthlyPercentage = (
+        (firstDayIndex !== 0
+          ? balance.balance[balance.balance.length - 1] /
+            balance.balance[firstDayIndex - 1]
+          : balance.balance[balance.balance.length - 1] / balance.balance[0]) *
+          100 -
+        100
+      ).toFixed(2);
+
       setMonthlySeries((prev) => [
         {
           ...prev[0],
@@ -85,21 +99,29 @@ const Dashboard = (props) => {
       setMonthlyGain((prev) => ({
         ...prev,
         gain: monthlyPln,
-        percentage: (
-          (balance.balance[balance.balance.length - 1] /
-            balance.balance[firstDayIndex]) *
-            100 -
-          100
-        ).toFixed(2),
+        percentage: monthlyPercentage,
       }));
 
       const thisYear = `${today.getFullYear()}-1-1`;
       const firstYearTrade = balance.dates.findIndex(
         (date) => date >= thisYear
       );
+
       const yearlyPln =
-        balance.balance[balance.balance.length - 1] -
-        balance.balance[firstYearTrade];
+        firstYearTrade !== 0
+          ? balance.balance[balance.balance.length - 1] -
+            balance.balance[firstYearTrade - 1]
+          : balance.balance[balance.balance.length - 1] - balance.balance[0];
+
+      const yearlyPercentage = (
+        (firstYearTrade !== 0
+          ? balance.balance[balance.balance.length - 1] /
+            balance.balance[firstYearTrade - 1]
+          : balance.balance[balance.balance.length - 1] / balance.balance[0]) *
+          100 -
+        100
+      ).toFixed(2);
+      //}
 
       setYearlySeries((prev) => [
         {
@@ -110,15 +132,10 @@ const Dashboard = (props) => {
       setYearlyGain((prev) => ({
         ...prev,
         gain: yearlyPln,
-        percentage: (
-          (balance.balance[balance.balance.length - 1] /
-            balance.balance[firstYearTrade]) *
-            100 -
-          100
-        ).toFixed(2),
+        percentage: yearlyPercentage,
       }));
     }
-  }, []);
+  }, [balance]);
 
   const data = {
     options: {
@@ -360,21 +377,19 @@ const Dashboard = (props) => {
               </Card>
             </div>
           </div>
-          <div className="row">
-            <div className="balance">
-              <h4 className="balance_header">PLN EVOLUTION FOR ACCOUNT</h4>
-              <div className="chart">
-                <Chart
-                  options={lineChart.options}
-                  series={lineChart.series}
-                  type="area"
-                  width="100%"
-                  height="100%"
-                />
-              </div>
+          <div className="balance">
+            <h4 className="balance_header">PLN EVOLUTION FOR ACCOUNT</h4>
+            <div className="chart">
+              <Chart
+                options={lineChart.options}
+                series={lineChart.series}
+                type="area"
+                width="100%"
+                height="100%"
+              />
             </div>
           </div>
-          <div className="row mt-2">
+          <div className="mt-2">
             <div className="ticket">
               <div className="ticket_body">
                 <h4 className="ticket_header">TOP PERFORMING INSTRUMENTS</h4>
@@ -383,7 +398,7 @@ const Dashboard = (props) => {
                     <tr className="table_row" role="row">
                       <th className="table_header">Symbol</th>
                       <th className="table_header">$</th>
-                      <th className="table_header">Quanitity</th>
+                      <th className="table_header">Quantity</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -391,7 +406,7 @@ const Dashboard = (props) => {
                       <tr className="table_row" key={el.pair}>
                         <td className="table_cell">{el.pair}</td>
                         <td className="table_cell">{el.gain}</td>
-                        <td className="table_cell">{el.quanitity}</td>
+                        <td className="table_cell">{el.quantity}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -399,7 +414,7 @@ const Dashboard = (props) => {
               </div>
             </div>
           </div>
-          <div className="row mt-2">
+          <div className="mt-2">
             <div className="ticket">
               <div className="ticket_body">
                 <h4 className="ticket_header">BOTTOM PERFORMING INSTRUMENTS</h4>
@@ -408,7 +423,7 @@ const Dashboard = (props) => {
                     <tr className="table_row" role="row">
                       <th className="table_header">Symbol</th>
                       <th className="table_header">$</th>
-                      <th className="table_header">Quanitity</th>
+                      <th className="table_header">Quantity</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -416,7 +431,7 @@ const Dashboard = (props) => {
                       <tr className="table_row" key={el.pair}>
                         <td className="table_cell">{el.pair}</td>
                         <td className="table_cell">{el.gain}</td>
-                        <td className="table_cell">{el.quanitity}</td>
+                        <td className="table_cell">{el.quantity}</td>
                       </tr>
                     ))}
                   </tbody>

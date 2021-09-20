@@ -10,10 +10,11 @@ import { emailSignUpStart } from "../../redux/User/user.actions";
 
 const mapState = ({ user }) => ({
   currentUser: user.currentUser,
+  err: user.userError,
 });
 
 const SignUp = (props) => {
-  const { currentUser } = useSelector(mapState);
+  const { currentUser, err } = useSelector(mapState);
   const history = useHistory();
   const dispatch = useDispatch();
   const [email, setEmail] = useState();
@@ -26,7 +27,10 @@ const SignUp = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(emailSignUpStart({ email, password, name }));
+    const userName = name.trim().split(" ");
+    const firstName = userName[0] || "";
+    const lastName = userName[1] || "";
+    dispatch(emailSignUpStart({ email, password, firstName, lastName }));
   };
 
   return (
@@ -66,6 +70,7 @@ const SignUp = (props) => {
             />
           </div>
           <div className="row row-center mt-2">
+            {err ? <p className="text-red text-error">{err}</p> : null}
             <Button>Sign Up </Button>
           </div>
         </form>

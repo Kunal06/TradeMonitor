@@ -1,35 +1,127 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import CalendarInput from "../../components/Calendar";
 import MainLayout from "../../layouts/main";
 import "./style.scss";
 import { ReactComponent as CalendarIcon } from "../../assets/calendar.svg";
+import { ReactComponent as TradeIcon } from "../../assets/trade.svg";
 import Button from "../../components/Button";
 import InputTag from "../../components/InputTags";
 import Select from "../../components/Select";
 import Input from "../../components/Input";
-
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchTradesStart,
+  filterTrades,
+  removeTradeStart,
+  updateBalanceStart,
+} from "../../redux/Trades/trades.actions";
+import Trade from "../../components/Trade";
+import Modal from "../../components/Modal";
+import { showModal } from "../../redux/Modal/modal.actions";
+import useModal from "../../hooks/useModal";
+import useSortableData from "../../hooks/useSortableData";
+import ReactTooltip from "react-tooltip";
 const list = ["Type", "Forex", "Crypto"];
 
+const mapState = ({ trades }) => ({
+  trades: trades.filteredTrades,
+  balance: trades.balance,
+  balanceChanged: trades.balanceChanged,
+});
+
 const MyTrades = (props) => {
-  const [value, onChange] = useState([new Date(), new Date()]);
+  const [value, onChange] = useState({
+    date: [new Date(), new Date()],
+    showDate: false,
+  });
   const [tags, setTags] = useState([]);
-  const [type, setType] = useState("type");
-  const [direction, setDirection] = useState("");
+  const [type, setType] = useState("Type");
+  const [symbol, setSymbol] = useState("");
+  const [side, setSide] = useState("Side");
+  const [trade, setTrade] = useState(null);
+  const { trades, balance, balanceChanged } = useSelector(mapState);
+  const { items, requestSort, sortConfig } = useSortableData(trades);
+  const { show, loading, done, error } = useModal();
+  const dispatch = useDispatch();
 
   const onTypeChange = (newType) => setType(newType);
-  const onDirectionChange = (newDirection) => setDirection(newDirection);
-
+  const onSideChange = (newSide) => setSide(newSide);
+  const handleDatePick = (value) => {
+    onChange((prev) => ({
+      ...prev,
+      date: value,
+      showDate: true,
+    }));
+  };
   const handleTagsInput = (arr) => setTags(arr);
-
-  const handleFilterSubmit = () => {};
-
+  const handleFilterSubmit = () => {
+    const filters = {
+      date: value.showDate ? value.date : [,],
+      tags,
+      type: type === "Type" ? "" : type,
+      side: side === "Side" ? "" : side,
+      symbol,
+    };
+    dispatch(filterTrades(filters));
+  };
   const handleFiltersClear = () => {
-    onChange([new Date(), new Date()]);
+    onChange({
+      date: [new Date(), new Date()],
+      showDate: false,
+    });
     setTags([]);
+    setSymbol("");
+    setType("Type");
+    setSide("Side");
+    const filters = {
+      date: [,],
+      tags,
+      type: "",
+      side: "",
+      symbol,
+    };
+    dispatch(filterTrades(filters));
+  };
+  const handleTradeRemove = () => dispatch(removeTradeStart(trade));
+  const handleModal = (trade) => {
+    dispatch(showModal());
+    setTrade(trade);
+  };
+  useEffect(() => {
+    const filters = {
+      date: value,
+      tags,
+      type,
+      side,
+      symbol,
+    };
+    dispatch(fetchTradesStart(filters));
+  }, []);
+
+  useEffect(() => {
+    if (balanceChanged) dispatch(updateBalanceStart(balance));
+  }, [balanceChanged]);
+
+  const getClassNamesFor = (name) => {
+    if (!sortConfig) {
+      return "arrows";
+    }
+    return sortConfig.key === name
+      ? `${sortConfig.direction} arrows`
+      : "arrows";
   };
 
   return (
     <MainLayout title="Trades">
+      <Modal
+        show={show}
+        loading={loading}
+        confirm={handleTradeRemove}
+        done={done}
+        error={error}
+        cancel={() => dispatch(showModal())}
+      />
+      <ReactTooltip />
       <section className="section">
         <h4 className="section_title">
           <CalendarIcon className="icon-small" />
@@ -38,35 +130,36 @@ const MyTrades = (props) => {
         <div className="row">
           <div className="col-2">
             <CalendarInput
-              value={value}
-              onChange={onChange}
+              value={value.date}
+              showDate={value.showDate}
+              onChange={(value) => handleDatePick(value)}
               selectRange={true}
               returnValue="range"
             />
           </div>
-          <div className="col-2">
-            <InputTag
-              defaultTags={tags}
-              onChange={handleTagsInput}
-              limit={3}
-              defaultPick="Type"
-            />
+          <div className="col-3">
+            <InputTag defaultTags={tags} onChange={handleTagsInput} limit={3} />
           </div>
 
           <div className="col-1">
-            <Select list={list} handler={onTypeChange} defaultPick="Type" />
+            <Select list={list} handler={onTypeChange} selected={type} />
           </div>
           <div className="col-1">
             <Select
               list={["Side", "Buy", "Sell"]}
-              handler={onDirectionChange}
-              defaultPick="Side"
+              handler={onSideChange}
+              defaultPick="Type"
+              selected={side}
             />
           </div>
           <div className="col-2">
-            <Input placeholder="Symbol (eg. GBPUSD)" />
+            <Input
+              placeholder="Eg. GBPUSD"
+              handler={(e) => setSymbol(e.target.value.toUpperCase())}
+              value={symbol}
+            />
           </div>
-          <div className="col-2 mt-2 row">
+          <div className="col-3 mt-2 flex">
             <Button handler={handleFilterSubmit}>Filter </Button>
             <Button btnStyle="btn--unstyled" handler={handleFiltersClear}>
               Clear
@@ -77,64 +170,89 @@ const MyTrades = (props) => {
 
       <section className="section">
         <h4 className="section_title">
-          <span>Your Trades</span>
+          <span>
+            <TradeIcon className="icon-small" /> Your Trades
+          </span>
         </h4>
         <div className="table_wrapper">
           <table className="table">
             <thead>
               <tr className="table_row" role="row">
-                <th className="table_header">Date</th>
-                <th className="table_header">Time</th>
-                <th className="table_header">Symbol</th>
-                <th className="table_header">Side</th>
-                <th className="table_header">Qty</th>
-                <th className="table_header">Price</th>
-                <th className="table_header">Net</th>
-                <th className="table_header">Commision</th>
-                <th className="table_header">Fees</th>
+                <th
+                  className="table_header"
+                  onClick={() => requestSort("date")}
+                >
+                  <button className="btn--default bold" type="button">
+                    Date <span className={getClassNamesFor("date")} />
+                  </button>
+                </th>
+                <th
+                  className="table_header"
+                  onClick={() => requestSort("symbol")}
+                >
+                  <button className="btn--default bold" type="button">
+                    Symbol <span className={getClassNamesFor("symbol")} />
+                  </button>
+                </th>
+                <th
+                  className="table_header"
+                  onClick={() => requestSort("type")}
+                >
+                  <button className="btn--default bold" type="button">
+                    Type <span className={getClassNamesFor("type")} />
+                  </button>
+                </th>
+                <th
+                  className="table_header"
+                  onClick={() => requestSort("side")}
+                >
+                  <button className="btn--default bold" type="button">
+                    Side <span className={getClassNamesFor("side")} />
+                  </button>
+                </th>
+                <th
+                  className="table_header"
+                  onClick={() => requestSort("quantity")}
+                >
+                  <button className="btn--default bold" type="button">
+                    Qty <span className={getClassNamesFor("quantity")} />
+                  </button>
+                </th>
+                <th
+                  className="table_header"
+                  onClick={() => requestSort("entryPrice")}
+                >
+                  <button className="btn--default bold" type="button">
+                    Entry Price{" "}
+                    <span className={getClassNamesFor("entryPrice")} />
+                  </button>
+                </th>
+                <th
+                  className="table_header"
+                  onClick={() => requestSort("stopLoss")}
+                >
+                  <button className="btn--default bold" type="button">
+                    Stop Loss <span className={getClassNamesFor("stopLoss")} />
+                  </button>
+                </th>
                 <th className="table_header">Notes</th>
                 <th className="table_header">Tags</th>
-                <th className="table_header">Pct %</th>
-                <th className="table_header">Stop Loss</th>
-                <th className="table_header">Profit Target</th>
+                <th className="table_header" onClick={() => requestSort("net")}>
+                  <button className="btn--default bold" type="button">
+                    Profit <span className={getClassNamesFor("net")} />
+                  </button>
+                </th>
                 <th className="table_header">Options</th>
               </tr>
             </thead>
             <tbody>
-              <tr className="table_row">
-                <td className="table_cell">2020-12-18</td>
-                <td className="table_cell">12:51:53</td>
-                <td className="table_cell">GBPUSD</td>
-                <td className="table_cell">SELL</td>
-                <td className="table_cell">1</td>
-                <td className="table_cell">$1.3282</td>
-                <td className="table_cell">$0</td>
-                <td className="table_cell">$0</td>
-                <td className="table_cell">2</td>
-                <td className="table_cell">This is s...</td>
-                <td className="table_cell">#ez, #ezboi ...</td>
-                <td className="table_cell">1.58%</td>
-                <td className="table_cell">0</td>
-                <td className="table_cell">0</td>
-                <td className="table_cell"></td>
-              </tr>
-              <tr className="table_row">
-                <td className="table_cell">2020-12-18</td>
-                <td className="table_cell">12:51:53</td>
-                <td className="table_cell">GBPUSD</td>
-                <td className="table_cell">SELL</td>
-                <td className="table_cell">1</td>
-                <td className="table_cell">$1.3282</td>
-                <td className="table_cell">$0</td>
-                <td className="table_cell">$0</td>
-                <td className="table_cell">2</td>
-                <td className="table_cell">This is s...</td>
-                <td className="table_cell">#ez, #ezboi ...</td>
-                <td className="table_cell">1.58%</td>
-                <td className="table_cell">0</td>
-                <td className="table_cell">0</td>
-                <td className="table_cell"></td>
-              </tr>
+              {items.map((trade) => (
+                <Trade
+                  trade={trade}
+                  handler={() => handleModal(trade)}
+                  key={trade.id}
+                />
+              ))}
             </tbody>
           </table>
         </div>

@@ -72,6 +72,7 @@ const DailyJournal = (props) => {
             <CalendarInput
               value={value}
               onChange={onChange}
+              showDate={true}
               selectRange={true}
               returnValue="range"
             />
@@ -83,10 +84,12 @@ const DailyJournal = (props) => {
               limit={3}
             />
           </div>
-          <Button handler={handleFilterSubmit}>Filter </Button>
-          <Button btnStyle="btn--unstyled" handler={handleFiltersClear}>
-            Clear
-          </Button>
+          <div className="col-3 flex">
+            <Button handler={handleFilterSubmit}>Filter </Button>
+            <Button btnStyle="btn--unstyled" handler={handleFiltersClear}>
+              Clear
+            </Button>
+          </div>
         </div>
       </section>
 

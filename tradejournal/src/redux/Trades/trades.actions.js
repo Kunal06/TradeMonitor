@@ -23,3 +23,47 @@ export const updateBalanceStart = (balance) => ({
   type: tradesTypes.UPDATE_BALANCE_START,
   payload: balance,
 });
+
+export const updateBalanceSuccess = () => ({
+  type: tradesTypes.UPDATE_BALANCE_SUCCESS,
+});
+
+export const fetchTradesStart = (filters) => ({
+  type: tradesTypes.FETCH_TRADES_START,
+  payload: filters,
+});
+
+export const fetchTradesSuccess = (trades) => ({
+  type: tradesTypes.FETCH_TRADES_SUCCESS,
+  payload: trades,
+});
+
+export const filterTrades = (filters) => ({
+  type: tradesTypes.FILTER_TRADES,
+  payload: filters,
+});
+
+export const removeTradeStart = (tradeId) => ({
+  type: tradesTypes.REMOVE_TRADE_START,
+  payload: tradeId,
+});
+
+export const removeTradeSuccess = (tradeId) => ({
+  type: tradesTypes.REMOVE_TRADE_SUCCESS,
+  payload: tradeId,
+});
+
+export const editTradeStart = (trade) => ({
+  type: tradesTypes.EDIT_TRADE_START,
+  payload: trade,
+});
+
+export const editTradeSuccess = (trade) => ({
+  type: tradesTypes.EDIT_TRADE_SUCCESS,
+  payload: trade,
+});
+
+export const updateInitialBalance = (value) => ({
+  type: tradesTypes.UPDATE_INITIAL_BALANCE,
+  payload: value,
+});

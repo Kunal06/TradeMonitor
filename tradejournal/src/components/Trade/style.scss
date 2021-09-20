@@ -1,0 +1,28 @@
+.trade_tags {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  justify-content: center;
+
+  .tag {
+    background: var(--button);
+    padding: 2px 5px;
+    color: var(--text-light);
+    border-radius: 2px;
+    font-size: 0.7rem;
+    margin: 0 5px 5px 0;
+    flex-grow: 1;
+    text-align: center;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  .tag_dots {
+    position: absolute;
+    bottom: 0;
+  }
+}
+
+.pointer {
+  cursor: pointer;
+}

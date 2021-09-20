@@ -9,11 +9,17 @@ import Button from "../../components/Button";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addTradeStart,
+  editTradeStart,
   updateBalanceStart,
 } from "../../redux/Trades/trades.actions";
+import Select from "../../components/Select";
+import { useHistory, useParams } from "react-router-dom";
 
-const mapState = ({ trades }) => ({
+const mapState = ({ trades, posts }) => ({
   balance: trades.balance,
+  balanceChanged: trades.balanceChanged,
+  trades: trades.trades,
+  loading: posts.isLoading,
 });
 
 const AddTrade = () => {
@@ -24,6 +30,10 @@ const AddTrade = () => {
   });
   const [side, setSide] = useState("Buy");
   const [symbol, setSymbol] = useState("");
+  const [type, setType] = useState({
+    value: "",
+    error: false,
+  });
   const [quantity, setQuantity] = useState("");
   const [entryPrice, setEntryPrice] = useState("");
   const [exitPrice, setExitPrice] = useState("");
@@ -31,18 +41,24 @@ const AddTrade = () => {
   const [net, setNet] = useState("");
   const [imgUrl, setImgUrl] = useState("");
   const [notes, setNotes] = useState("");
-  const { balance } = useSelector(mapState);
+
+  const { balance, trades, loading, balanceChanged } = useSelector(mapState);
   const dispatch = useDispatch();
+  const { id } = useParams();
+  const history = useHistory();
 
   const handleTagsChange = (newTags) =>
-    setTags((prev) => ({ ...prev, arr: [...newTags], error: false }));
+    setTags((prev) => ({ ...prev, arr: [...newTags].sort(), error: false }));
 
-  const validateNumber = (value, fn) => {
-    isNaN(value) || value < 0 ? fn(0) : fn(value);
+  const onTypeChange = (newType) =>
+    setType((prev) => ({ ...prev, value: newType, error: false }));
+
+  const validateNumber = (value) => {
+    return isNaN(value) || value < 0 ? 0 : parseFloat(value);
   };
 
-  const validateProfit = (value, fn) => {
-    isNaN(value) ? fn(0) : fn(value);
+  const validateProfit = (value) => {
+    return isNaN(value) ? 0 : parseFloat(value);
   };
 
   const handleSubmit = (e) => {
@@ -51,36 +67,88 @@ const AddTrade = () => {
       setTags((prev) => ({ ...prev, error: true }));
       return;
     }
+
+    if (type.value === "") {
+      setType((prev) => ({ ...prev, error: true }));
+      return;
+    }
     const trade = {
       date: value,
       tags: tags.arr,
       side,
       symbol,
-      quantity,
-      entryPrice,
-      exitPrice,
-      stopLoss,
-      net,
+      quantity: validateNumber(quantity),
+      entryPrice: validateNumber(entryPrice),
+      exitPrice: validateNumber(exitPrice),
+      stopLoss: validateNumber(stopLoss),
+      net: validateProfit(net),
       imgUrl,
       notes,
+      type: type.value,
     };
-    dispatch(addTradeStart({ trade, balance }));
+
+    if (id) {
+      dispatch(editTradeStart({ trade, id }));
+      if (!loading) setTimeout(() => history.push("/mytrades"), 1000);
+    } else dispatch(addTradeStart({ trade }));
+    clearForm();
+  };
+
+  const clearForm = () => {
+    setSide("Buy");
+    setStopLoss("");
+    setSymbol("");
+    setTags({
+      arr: [],
+      error: false,
+    });
+    setQuantity("");
+    setEntryPrice("");
+    setImgUrl("");
+    setExitPrice("");
+    setStopLoss("");
+    setNotes("");
+    setNet("");
   };
 
   useEffect(() => {
-    dispatch(updateBalanceStart(balance));
-  }, [balance]);
+    if (balanceChanged) dispatch(updateBalanceStart(balance));
+  }, [balanceChanged]);
+
+  useEffect(() => {
+    if (id) {
+      const trade = trades.find((el) => el.id === id);
+      onChange(trade.date);
+      setSide(trade.side);
+      setStopLoss(trade.stopLoss);
+      setSymbol(trade.symbol);
+      setTags((prev) => ({ ...prev, arr: [...trade.tags] }));
+      setQuantity(trade.quantity);
+      setEntryPrice(trade.entryPrice);
+      setImgUrl(trade.imgUrl);
+      setExitPrice(trade.exitPrice);
+      setStopLoss(trade.stopLoss);
+      setNotes(trade.notes);
+      setNet(trade.net);
+      setType((prev) => ({
+        ...prev,
+        value: trade.type,
+      }));
+    } else {
+      clearForm();
+    }
+  }, [id]);
 
   return (
-    <MainLayout title="Add Trade">
+    <MainLayout title={id ? "Edit Trade" : "Add Trade"}>
       <section className="section">
         <h4 className="section_title">
-          <ExportIcon className="ic on-small" />
+          <ExportIcon className="icon-small" />
           <span>Manual Entry</span>
         </h4>
         <p>
-          Use this form to insert your trades manually. Mandatory fields are
-          marked with *.
+          Use this form to {id ? "edit" : "insert"} your trades manually.
+          Mandatory fields are marked with *.
         </p>
         <div className="col-12 mt-1">
           <form className="add_form" onSubmit={handleSubmit}>
@@ -118,53 +186,72 @@ const AddTrade = () => {
               <Input
                 label="Symbol *:"
                 placeholder="Eg. EURUSD"
-                handler={(e) => setSymbol(e.target.value)}
+                handler={(e) => setSymbol(e.target.value.toUpperCase())}
                 required
+                value={symbol}
+              />
+            </div>
+            <div className="col-10">
+              <label className="label">Type *:</label>
+              <Select
+                list={["Forex", "Crypto"]}
+                selected={type.value}
+                handler={onTypeChange}
               />
             </div>
             <div className="col-10">
               <Input
                 label="Quanitity *:"
-                handler={(e) => validateNumber(e.target.value, setQuantity)}
+                handler={(e) => setQuantity(e.target.value)}
                 required
+                value={quantity}
               />
             </div>
             <div className="col-10">
               <label className="label">Date *:</label>
-              <CalendarInput value={value} onChange={onChange} />
+              <CalendarInput
+                value={value}
+                onChange={onChange}
+                showDate={true}
+              />
               required
             </div>
             <div className="col-10">
               <Input
                 label="Entry Price *:"
-                handler={(e) => validateNumber(e.target.value, setEntryPrice)}
+                handler={(e) => setEntryPrice(e.target.value)}
                 required
+                value={entryPrice}
               />
             </div>
             <div className="col-10">
               <Input
                 label="Exit Price *:"
-                handler={(e) => validateNumber(e.target.value, setExitPrice)}
+                handler={(e) => setExitPrice(e.target.value)}
                 required
+                value={exitPrice}
               />
             </div>
             <div className="col-10">
               <Input
                 label="Stop Loss:"
-                handler={(e) => validateNumber(e.target.value, setStopLoss)}
+                handler={(e) => setStopLoss(e.target.value)}
+                value={stopLoss}
               />
             </div>
             <div className="col-10">
               <Input
                 label="Image Url:"
                 handler={(e) => setImgUrl(e.target.value)}
+                value={imgUrl}
               />
             </div>
             <div className="col-10">
               <Input
                 label="Profit/Loss *:"
-                handler={(e) => validateProfit(e.target.value, setNet)}
+                handler={(e) => setNet(e.target.value)}
                 required
+                value={net}
               />
             </div>
             <div className="col-10">
@@ -174,6 +261,7 @@ const AddTrade = () => {
                 rows="5"
                 className="input text_area"
                 onChange={(e) => setNotes(e.target.value)}
+                value={notes}
               />
             </div>
             <div className="col-10">
@@ -184,8 +272,13 @@ const AddTrade = () => {
                 error={tags.error}
               />
             </div>
-            <div className="row mt-2">
-              <Button type="submit">Save</Button>
+            {type.error ? (
+              <p className="text-red mt-1">Please pick trade type!</p>
+            ) : null}
+            <div className="col-10 ">
+              <Button type="submit" btnStyle="mt-2">
+                Save
+              </Button>
             </div>
           </form>
         </div>

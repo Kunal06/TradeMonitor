@@ -65,9 +65,13 @@ const PostForm = ({ handler, post, ...otherProps }) => {
       </div>
       <div className="col-10 mt-2">
         <label className="label">Choose a date</label>
-        <CalendarInput value={postDate} onChange={setPostDate} />
+        <CalendarInput
+          value={postDate}
+          onChange={setPostDate}
+          showDate={true}
+        />
       </div>
-      <div className="row mt-2">{children}</div>
+      <div className=" mt-2">{children}</div>
     </form>
   );
 };

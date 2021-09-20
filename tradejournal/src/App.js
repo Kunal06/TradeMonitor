@@ -15,6 +15,8 @@ import { AnimatePresence } from "framer-motion";
 import Popup from "./components/Popup";
 import MyTrades from "./pages/TradeJournal";
 import AddTrade from "./pages/AddTrade";
+import InvidualTrade from "./pages/InvidualTrade";
+import User from "./pages/User";
 
 function App() {
   const dispatch = useDispatch();
@@ -41,6 +43,9 @@ function App() {
           <AuthRoute exact path="/edit-journal/:id" component={EditJournal} />
           <AuthRoute exact path="/mytrades" component={MyTrades} />
           <AuthRoute exact path="/import" component={AddTrade} />
+          <AuthRoute exact path="/import/:id" component={AddTrade} />
+          <AuthRoute exact path="/journal-trades/" component={InvidualTrade} />
+          <AuthRoute exact path="/user/" component={User} />
 
           <Route exact path="/signup" render={() => <SignUp />} />
           <Route exact path="/signin" render={() => <SignIn />} />
