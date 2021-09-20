@@ -12,11 +12,10 @@ export const handleUserProfile = async ({ userAuth, additionalData }) => {
   if (!userAuth) return;
   const { uid } = userAuth;
   const userRef = firestore.doc(`users/${uid}`);
-  const balanceRef = userRef.collection("balance");
   const snapshot = await userRef.get();
 
   if (!snapshot.exists) {
-    const { name, email } = userAuth;
+    const { email } = userAuth;
     const timestamp = new Date();
 
     const date = new Date();
@@ -28,19 +27,24 @@ export const handleUserProfile = async ({ userAuth, additionalData }) => {
     try {
       await userRef.set({
         email,
-        name,
         createdDate: timestamp,
         ...additionalData,
+        initialBalance: 2000,
       });
-      await balanceRef.set({
-        balance: 2000,
-        dates: [formattedDate],
-        values: [0],
-        loses: 0,
-        wins: 0,
-      });
+      await firestore
+        .collection("users")
+        .doc(uid)
+        .collection("balance")
+        .doc()
+        .set({
+          balance: [2000],
+          dates: [formattedDate],
+          values: [0],
+          loses: 0,
+          wins: 0,
+        });
     } catch (err) {
-      // console.log(err);
+      console.log(err);
     }
   }
 
@@ -56,6 +60,9 @@ export const getCurrentUser = () => {
 };
 
 export const getUserId = () => auth.currentUser;
+
+export const updateUserInDb = async (user, id) =>
+  await firestore.collection("users").doc(id).update(user);
 
 export const addPostToDb = async (post, uid) =>
   firestore
@@ -134,3 +141,39 @@ export const fetchBalanceFromDb = async (uid) => {
     );
   return balance[0];
 };
+
+export const fetchTradesFromDb = async (uid) => {
+  const trades = [];
+  let tradesRef = firestore
+    .collection("users")
+    .doc(uid)
+    .collection("trades")
+    .orderBy("date");
+
+  await tradesRef.get().then((docs) =>
+    docs.forEach((doc) =>
+      trades.push({
+        id: doc.id,
+        ...doc.data(),
+        date: doc.data().date.toDate(),
+      })
+    )
+  );
+  return trades;
+};
+
+export const removeTradeFromDb = (uid, tradeId) =>
+  firestore
+    .collection("users")
+    .doc(uid)
+    .collection("trades")
+    .doc(tradeId)
+    .delete();
+
+export const editTradeInDb = (uid, trade, id) =>
+  firestore
+    .collection("users")
+    .doc(uid)
+    .collection("trades")
+    .doc(id)
+    .set(trade);
