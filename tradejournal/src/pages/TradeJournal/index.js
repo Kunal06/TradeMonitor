@@ -21,7 +21,7 @@ import { showModal } from "../../redux/Modal/modal.actions";
 import useModal from "../../hooks/useModal";
 import useSortableData from "../../hooks/useSortableData";
 import ReactTooltip from "react-tooltip";
-const list = ["Type", "Forex", "Crypto"];
+const list = ["Type", "Futures", "Options", "Stocks", "Forex", "Crypto"];
 
 const mapState = ({ trades }) => ({
   trades: trades.filteredTrades,
