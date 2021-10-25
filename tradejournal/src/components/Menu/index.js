@@ -18,7 +18,7 @@ const journalLinks = [
 const reportsLinks = [{ link: "/mytrades", title: "My Trades" }];
 const importsLinks = [
     { link: "/import", title: "Manual Entry" },
-    { link: "/import", title: "Upload files" },
+    { link: "/UploadTrades", title: "Upload files" },
 ];
 
 const Menu = (props) => {

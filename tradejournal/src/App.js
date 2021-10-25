@@ -15,6 +15,7 @@ import { AnimatePresence } from "framer-motion";
 import Popup from "./components/Popup";
 import MyTrades from "./pages/TradeJournal";
 import AddTrade from "./pages/AddTrade";
+import UploadTrades from "./pages/UploadTrades";
 import IndividualTrade from "./pages/IndividualTrade";
 import User from "./pages/User";
 
@@ -48,6 +49,11 @@ function App() {
                     <AuthRoute exact path="/mytrades" component={MyTrades} />
                     <AuthRoute exact path="/import" component={AddTrade} />
                     <AuthRoute exact path="/import/:id" component={AddTrade} />
+                    <AuthRoute
+                        exact
+                        path="/UploadTrades"
+                        component={UploadTrades}
+                    />
                     <AuthRoute
                         exact
                         path="/journal-trades/"
