@@ -16,12 +16,17 @@ const journalLinks = [
 ];
 
 const reportsLinks = [{ link: "/mytrades", title: "My Trades" }];
+const importsLinks = [
+    { link: "/import", title: "Manual Entry" },
+    { link: "/import", title: "Upload files" },
+];
 
 const Menu = (props) => {
     const [isOpen, setIsOpen] = useState(false);
     const [subMenu, setSubMenu] = useState({
         0: false,
         1: false,
+        2: false
     });
 
     const handleSubMenu = (id) => {
@@ -48,7 +53,7 @@ const Menu = (props) => {
                             className={
                                 "links " +
                                 `${isOpen ? "active " : ""}` +
-                                `${subMenu[0] || subMenu[1] ? "auto " : ""}`
+                                `${subMenu[0] || subMenu[1] || subMenu[2] ? "auto " : ""}`
                             }
                         >
                             <Link to="/" className="link">
@@ -83,10 +88,20 @@ const Menu = (props) => {
                                     isOpen={subMenu[1]}
                                 />
                             </li>
-                            <Link to={{ pathname: "/import" }} className="link">
-                                <Import className="link_icon" />
-                                Import
-                            </Link>
+                            <li className="link">
+                                <div
+                                    className="link_header"
+                                    onClick={() => handleSubMenu(2)}
+                                >
+                                    <Import className="link_icon" />
+                                    Import{" "}
+                                    <Arrow className="icon-small mobile-arrow" />
+                                </div>
+                                <DropDownMenu
+                                    list={importsLinks}
+                                    isOpen={subMenu[2]}
+                                />
+                            </li>
                         </ul>
                     </div>
                 </div>
