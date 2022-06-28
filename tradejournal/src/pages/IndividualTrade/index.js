@@ -27,10 +27,11 @@ const IndividualTrade = (props) => {
     const handlePageChange = (arr) => {
         setPaginatedTrades(arr);
         setProccesing(true);
-        setTimeout(() => {
+        const timer = setTimeout(() => {
             setProccesing(false);
-        }, 1000);
+        }, 3000);
         window.scrollTo(0, 0);
+        return () => clearTimeout(timer);
     };
 
     return (
