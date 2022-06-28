@@ -113,7 +113,7 @@ const AddTrade = () => {
 
   useEffect(() => {
     if (balanceChanged) dispatch(updateBalanceStart(balance));
-  }, [balanceChanged]);
+  }, [balance, balanceChanged, dispatch]);
 
   useEffect(() => {
     if (id) {
@@ -137,7 +137,7 @@ const AddTrade = () => {
     } else {
       clearForm();
     }
-  }, [id]);
+  }, [id, trades]);
 
   return (
     <MainLayout title={id ? "Edit Trade" : "Add Trade"}>

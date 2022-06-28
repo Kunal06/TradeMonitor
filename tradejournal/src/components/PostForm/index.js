@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "./style.scss";
-import PropTypes from "prop-types";
 
 import ReactQuill from "react-quill";
 import Input from "../../components/Input";

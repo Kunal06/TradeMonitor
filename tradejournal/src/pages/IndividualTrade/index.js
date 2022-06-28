@@ -22,7 +22,7 @@ const IndividualTrade = (props) => {
 
     useEffect(() => {
         dispatch(fetchTradesStart({}));
-    }, []);
+    }, [dispatch]);
 
     const handlePageChange = (arr) => {
         setPaginatedTrades(arr);

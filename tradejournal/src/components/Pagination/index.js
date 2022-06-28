@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import "./style.scss";
 
 const Pagination = ({ list, limit, handler, ...otherProps }) => {
   const [page, setPage] = useState(1);
   const [numPages, setNumPages] = useState([]);
 
-  const paginateList = (nr) => {
+  const paginateList = useCallback((nr) => {
     const startIndex = (nr - 1) * limit;
     const totalItems = list.length;
     const endIndex = Math.min(startIndex + limit - 1, totalItems - 1);
     const arr = list.slice(startIndex, endIndex + 1);
     handler(arr);
-  };
+  },[handler, limit, list]);
 
   const getNextPage = (nr) => {
     if (nr === 0) return;
@@ -29,7 +29,7 @@ const Pagination = ({ list, limit, handler, ...otherProps }) => {
     const pages = Math.ceil(list.length / limit);
     setNumPages(pages);
     paginateList(1);
-  }, [list]);
+  }, [limit, list, paginateList]);
 
   return (
     <div className="pagination mt-2">

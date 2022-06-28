@@ -32,7 +32,7 @@ const Navbar = (props) => {
           <Avatar data={currentUser} />
           <ul
             className={
-              "dropdown list-unstyled " + `${isOpen ? "dropdown--open" : ""}`
+              `dropdown list-unstyled ${isOpen ? "dropdown--open" : ""}`
             }
           >
             <li className="dropdown_item">

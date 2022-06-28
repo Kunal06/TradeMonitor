@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import CalendarInput from "../../components/Calendar";
 import MainLayout from "../../layouts/main";
 import "./style.scss";
@@ -56,7 +56,7 @@ const MyTrades = (props) => {
   const handleTagsInput = (arr) => setTags(arr);
   const handleFilterSubmit = () => {
     const filters = {
-      date: value.showDate ? value.date : [,],
+      date: value.showDate ? value.date : [],
       tags,
       type: type === "Type" ? "" : type,
       side: side === "Side" ? "" : side,
@@ -74,7 +74,7 @@ const MyTrades = (props) => {
     setType("Type");
     setSide("Side");
     const filters = {
-      date: [,],
+      date: [],
       tags,
       type: "",
       side: "",
@@ -96,11 +96,11 @@ const MyTrades = (props) => {
       symbol,
     };
     dispatch(fetchTradesStart(filters));
-  }, []);
+  }, [dispatch, side, symbol, tags, type, value]);
 
   useEffect(() => {
     if (balanceChanged) dispatch(updateBalanceStart(balance));
-  }, [balanceChanged]);
+  }, [balance, balanceChanged, dispatch]);
 
   const getClassNamesFor = (name) => {
     if (!sortConfig) {

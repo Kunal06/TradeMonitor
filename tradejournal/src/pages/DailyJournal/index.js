@@ -38,7 +38,7 @@ const DailyJournal = (props) => {
     if (posts.length === 0) {
       dispatch(fetchPostsStart({ user: user.id, dateRange: value }));
     }
-  }, []);
+  }, [dispatch, posts.length, user.id, value]);
 
   const handleFiltersClear = () => {
     onChange([new Date(), new Date()]);
