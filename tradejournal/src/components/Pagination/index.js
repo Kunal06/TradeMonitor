@@ -29,7 +29,8 @@ const Pagination = ({ list, limit, handler, ...otherProps }) => {
     const pages = Math.ceil(list.length / limit);
     setNumPages(pages);
     paginateList(1);
-  }, [list]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [limit, list]);
 
   return (
     <div className="pagination mt-2">
