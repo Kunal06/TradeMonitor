@@ -11,7 +11,7 @@ const Pagination = ({ list, limit, handler, ...otherProps }) => {
     const endIndex = Math.min(startIndex + limit - 1, totalItems - 1);
     const arr = list.slice(startIndex, endIndex + 1);
     handler(arr);
-  }, []);
+  }, [handler, limit, list]);
 
   const getNextPage = (nr) => {
     if (nr === 0) return;
@@ -29,7 +29,7 @@ const Pagination = ({ list, limit, handler, ...otherProps }) => {
     const pages = Math.ceil(list.length / limit);
     setNumPages(pages);
     paginateList(1);
-  }, [limit, list, paginateList]);
+  }, [list]);
 
   return (
     <div className="pagination mt-2">
