@@ -20,9 +20,10 @@ const EditJournal = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const handleSubmit = (postTitle, postComments, postDate, tags) => {
-    const newPost = { postTitle, postComments, postDate, tags };
+  const handleSubmit = (postTitle, postComments, postDate, tags, imgUrl) => {
+    const newPost = { postTitle, postComments, postDate, tags, imgUrl };
     dispatch(updatePostStart({ post: newPost, doc: id }));
+    handleReturn();
   };
 
   const handleReturn = () => history.push("/journal");
