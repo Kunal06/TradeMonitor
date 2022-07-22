@@ -9,11 +9,14 @@ import Button from "../../components/Button";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addTradeStart,
+  addMultipleTradesStart,
   editTradeStart,
   updateBalanceStart,
 } from "../../redux/Trades/trades.actions";
 import Select from "../../components/Select";
 import { useHistory, useParams } from "react-router-dom";
+
+import * as XLSX from 'xlsx'
 
 const mapState = ({ trades, posts }) => ({
   balance: trades.balance,
@@ -41,6 +44,12 @@ const AddTrade = () => {
   const [net, setNet] = useState("");
   const [imgUrl, setImgUrl] = useState("");
   const [notes, setNotes] = useState("");
+
+  const [excelFile, setExcelFile]=useState(null);
+  const [excelFileError, setExcelFileError]=useState(null);  
+  const [excelData, setExcelData]=useState(null);
+
+  const fileType=['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
 
   const { balance, trades, loading, balanceChanged } = useSelector(mapState);
   const dispatch = useDispatch();
@@ -113,7 +122,7 @@ const AddTrade = () => {
 
   useEffect(() => {
     if (balanceChanged) dispatch(updateBalanceStart(balance));
-  }, [balanceChanged]);
+  }, [balance, balanceChanged, dispatch]);
 
   useEffect(() => {
     if (id) {
@@ -137,8 +146,76 @@ const AddTrade = () => {
     } else {
       clearForm();
     }
-  }, [id]);
+  }, [id, trades]);
 
+  const handleFile = (e)=>{
+    let selectedFile = e.target.files[0];
+    if(selectedFile){
+      console.log(selectedFile.type);
+      if(selectedFile&&fileType.includes(selectedFile.type)){
+        let reader = new FileReader();
+        reader.readAsArrayBuffer(selectedFile);
+        reader.onload=(e)=>{
+          setExcelFileError(null);
+          setExcelFile(e.target.result);
+        } 
+      }
+      else{
+        setExcelFileError('Please select only excel file types');
+        setExcelFile(null);
+      }
+    }
+    else{
+      console.log('plz select your file');
+    }
+  }
+
+  // submit function
+  const handleFileSubmit=(e)=>{
+    e.preventDefault();
+    if(excelFile!==null){
+      const workbook = XLSX.read(excelFile,{type:'buffer'});
+      const worksheetName = workbook.SheetNames[0];
+      const worksheet=workbook.Sheets[worksheetName];
+      const data = XLSX.utils.sheet_to_json(worksheet);
+      console.log("Excel file - ",data);
+      setExcelData(data);
+    }
+    else{
+      setExcelData(null);
+    }
+
+    if (tags.arr.length === 0) {
+      setTags((prev) => ({ ...prev, error: true }));
+      return;
+    }
+
+    if (type.value === "") {
+      setType((prev) => ({ ...prev, error: true }));
+      return;
+    }
+    
+    // const trades = [];
+
+    // for (let row of excelData){
+    //     const trade = {
+    //       date: value,
+    //       tags: tags.arr,
+    //       side,
+    //       symbol,
+    //       quantity: validateNumber(quantity),
+    //       entryPrice: validateNumber(entryPrice),
+    //       exitPrice: validateNumber(exitPrice),
+    //       stopLoss: validateNumber(stopLoss),
+    //       net: validateProfit(net),
+    //       imgUrl,
+    //       notes,
+    //       type: type.value,
+    //     };
+    // }
+    // dispatch(addMultipleTradesStart({ trades }));
+  }
+  
   return (
     <MainLayout title={"Upload Trades"}>
       <section className="section">
@@ -147,10 +224,22 @@ const AddTrade = () => {
           <span>Automatic Entry</span>
         </h4>
         <p>
-          Use this form to {id ? "edit" : "insert"} your trades manually.
-          Mandatory fields are marked with *.
+          Use this form to upload NinjaTrader trades automatically.
         </p>
         <div className="col-12 mt-1">
+        <form className='form-group' autoComplete="off"
+        onSubmit={handleFileSubmit}>
+          <label><h5>Upload Excel file</h5></label>
+          <br></br>
+          <input type='file' className='form-control'
+          onChange={handleFile} required></input>                  
+          {excelFileError&&<div className='text-danger'
+          style={{marginTop:5+'px'}}>{excelFileError}</div>}
+          <button type='submit' className='btn btn-success'
+          style={{marginTop:5+'px'}}>Submit</button>
+        </form>
+        {/* {excelData} */}
+
           <form className="add_form" onSubmit={handleSubmit}>
             <div className="col-10">
               <label className="label">Trade Side *:</label>

@@ -2,6 +2,7 @@ import { takeLatest, put, call, all, delay } from "redux-saga/effects";
 import tradesTypes from "../Trades/trades.types";
 import {
   addTradeToDb,
+  addMultipleTradesToDb,
   editTradeInDb,
   fetchBalanceFromDb,
   fetchTradesFromDb,
@@ -11,6 +12,7 @@ import {
 } from "../../firebase/utils";
 import {
   addTradeSuccess,
+  addMultipleTradesSuccess,
   editTradeSuccess,
   fetchBalanceSuccess,
   fetchTradesSuccess,
@@ -48,6 +50,31 @@ export function* addTrade({ payload: { trade, id } }) {
 
 export function* onAddTradeStart() {
   yield takeLatest(tradesTypes.ADD_TRADE_START, addTrade);
+}
+
+export function* addMultipleTrades({ payload: { trades, id } }) {
+  try {
+    yield put(postLoading());
+    const { uid } = yield getUserId();
+    const docRef = yield addMultipleTradesToDb(uid, trades, id);
+    yield put(
+      addMultipleTradesSuccess({
+        id: docRef.id,
+        ...trades,
+      })
+    );
+    yield put(postLoading());
+    yield put(showPopup("Trade added successfully"));
+    yield delay(2000);
+    yield put(showPopup(""));
+  } catch (err) {
+    yield put(postError(err.message));
+    console.log(err.message);
+  }
+}
+
+export function* onAddMultipleTradesStart() {
+  yield takeLatest(tradesTypes.ADD_MULTIPLE_TRADES_START, addMultipleTrades);
 }
 
 export function* fetchBalance() {

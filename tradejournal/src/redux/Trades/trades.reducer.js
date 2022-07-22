@@ -129,48 +129,146 @@ const tradesReducer = (state = INITIAL_STATE, action) => {
         filteredTrades: [...state.trades, action.payload],
       };
     }
-    case tradesTypes.FETCH_TRADES_SUCCESS: {
+    case tradesTypes.ADD_MULTIPLE_TRADES_SUCCESS: {
+      const balance = state.balance;
+      const trade = action.payload;
+    //   const formattedDate = formatTradeDate(trade);
+    //   const dateIndex = balance.dates.findIndex(
+    //     (date) => date === formattedDate
+    //   );
+    //   let middleIndex = -1;
+    //   if (dateIndex === -1)
+    //     middleIndex = balance.dates.findIndex((date) => formattedDate < date);
+    //   let lastBalance = balance.balance[balance.balance.length - 1];
+    //   let newValues = [];
+    //   let newDates = [];
+    //   if (middleIndex === 0) {
+    //     newValues = [0, trade.net, ...balance.values.slice(1)];
+    //     const date = new Date(trade.date.getTime());
+    //     date.setDate(trade.date.getDate() - 1);
+    //     newDates = [
+    //       `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
+    //       formattedDate,
+    //       ...balance.dates.slice(1),
+    //     ];
+    //   } else if (middleIndex !== -1) {
+    //     newValues = [
+    //       ...balance.values.slice(0, middleIndex),
+    //       trade.net,
+    //       ...balance.values.slice(middleIndex),
+    //     ];
+    //     newDates = [
+    //       ...balance.dates.slice(0, middleIndex),
+    //       formattedDate,
+    //       ...balance.dates.slice(middleIndex),
+    //     ];
+    //   }
       return {
-        ...state,
-        trades: [...action.payload],
-        filteredTrades: [...action.payload],
-      };
-    }
-
-    case tradesTypes.FILTER_TRADES: {
-      const {
-        tags,
-        date: [start, end],
-        type,
-        side,
-        symbol,
-      } = action.payload;
-      let date = new Date();
-      if (start && end) {
-        date.setDate(start.getDate() - 1);
+        ...state
       }
-      return {
-        ...state,
-        filteredTrades: state.trades.filter((el) => {
-          if (tags.length > 0 && !el.tags.some((r) => tags.indexOf(r) >= 0))
-            return false;
-          if ((start && end && el.date < start) || el.date > end) return false;
-          if (type && el.type !== type) return false;
-          if (side && el.side !== side) return false;
-          if (symbol && el.symbol !== symbol) return false;
-          return true;
-        }),
-      };
-    }
-    case tradesTypes.FETCH_BALANCE_SUCCESS: {
-      return {
-        ...state,
-        balanceChanged: false,
-        balance: {
-          ...state.balance,
-          ...action.payload,
-        },
-      };
+    //   return {
+    //     ...state,
+    //     balanceChanged: true,
+    //     balance: {
+    //       ...balance,
+    //       values:
+    //         dateIndex !== -1
+    //           ? balance.values.map((el, i) => {
+    //               if (i === dateIndex)
+    //                 return parseFloat(el) + parseFloat(trade.net);
+    //               return el;
+    //             })
+    //           : middleIndex === -1
+    //           ? [...balance.values, trade.net]
+    //           : newValues,
+    //       balance:
+    //         dateIndex !== -1
+    //           ? balance.balance.map((el, i) => {
+    //               if (i === dateIndex)
+    //                 return parseFloat(el) + parseFloat(trade.net);
+    //               return el;
+    //             })
+    //           : middleIndex === -1
+    //           ? [
+    //               ...balance.balance,
+    //               parseFloat(lastBalance) + parseFloat(trade.net),
+    //             ]
+    //           : calculateNewBalance(newValues, balance.balance[0]),
+    //       dates:
+    //         dateIndex !== -1
+    //           ? [...balance.dates]
+    //           : middleIndex === -1
+    //           ? [...balance.dates, formattedDate]
+    //           : newDates,
+    //       wins:
+    //         trade.net > 0
+    //           ? parseInt(state.balance.wins) + 1
+    //           : state.balance.wins,
+    //       loses:
+    //         trade.net < 0
+    //           ? parseInt(state.balance.loses) + 1
+    //           : state.balance.loses,
+    //       pairs: {
+    //         ...balance.pairs,
+    //         [trade.symbol]: {
+    //           ...balance.pairs[trade.symbol],
+    //           gain: balance.pairs[trade.symbol]
+    //             ? parseFloat(balance.pairs[trade.symbol]?.gain) +
+    //               parseFloat(trade.net)
+    //             : parseFloat(trade.net),
+    //           quantity: balance.pairs[trade.symbol]
+    //             ? parseFloat(balance.pairs[trade.symbol].quantity) +
+    //               parseFloat(trade.quantity)
+    //             : parseFloat(trade.quantity),
+    //         },
+    //       },
+    //     },
+    //     trades: [...state.trades, action.payload],
+    //     filteredTrades: [...state.trades, action.payload],
+    //   };
+    // }
+    // case tradesTypes.FETCH_TRADES_SUCCESS: {
+    //   return {
+    //     ...state,
+    //     trades: [...action.payload],
+    //     filteredTrades: [...action.payload],
+    //   };
+    // }
+
+    // case tradesTypes.FILTER_TRADES: {
+    //   const {
+    //     tags,
+    //     date: [start, end],
+    //     type,
+    //     side,
+    //     symbol,
+    //   } = action.payload;
+    //   let date = new Date();
+    //   if (start && end) {
+    //     date.setDate(start.getDate() - 1);
+    //   }
+    //   return {
+    //     ...state,
+    //     filteredTrades: state.trades.filter((el) => {
+    //       if (tags.length > 0 && !el.tags.some((r) => tags.indexOf(r) >= 0))
+    //         return false;
+    //       if ((start && end && el.date < start) || el.date > end) return false;
+    //       if (type && el.type !== type) return false;
+    //       if (side && el.side !== side) return false;
+    //       if (symbol && el.symbol !== symbol) return false;
+    //       return true;
+    //     }),
+    //   };
+    // }
+    // case tradesTypes.FETCH_BALANCE_SUCCESS: {
+    //   return {
+    //     ...state,
+    //     balanceChanged: false,
+    //     balance: {
+    //       ...state.balance,
+    //       ...action.payload,
+    //     },
+    //   };
     }
 
     case tradesTypes.REMOVE_TRADE_SUCCESS: {

@@ -10,6 +10,16 @@ export const addTradeSuccess = (data) => ({
   payload: data,
 });
 
+export const addMultipleTradesStart = (data) => ({
+  type: tradesTypes.ADD_MULTIPLE_TRADES_START,
+  payload: data,
+});
+
+export const addMultipleTradesSuccess = (data) => ({
+  type: tradesTypes.ADD_MULTIPLE_TRADES_SUCCESS,
+  payload: data,
+});
+
 export const fetchBalanceStart = () => ({
   type: tradesTypes.FETCH_BALANCE_START,
 });

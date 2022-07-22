@@ -7,6 +7,7 @@ firebase.initializeApp(firebaseConfig);
 
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
+var batch = firestore.batch()
 
 export const handleUserProfile = async ({ userAuth, additionalData }) => {
     if (!userAuth) return;
@@ -128,6 +129,19 @@ export const addTradeToDb = (uid, trade) => {
         .collection("trades")
         .add(trade)
         .then((docRef) => docRef);
+};
+
+export const addMultipleTradesToDb = (uid, trades) => {
+    console.log("Add Multiple Trades to Db - ", trades);
+    trades.forEach((trade) => {
+        var tradeRef = firestore
+        .collection("users")
+        .doc(uid)
+        .collection("trades")
+        .doc(); //automatically generate unique id
+        batch.set(tradeRef, trade);
+    });
+    return batch.commit();
 };
 
 export const updateUserBalance = (uid, balance) =>
