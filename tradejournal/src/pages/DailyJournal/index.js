@@ -38,7 +38,7 @@ const DailyJournal = (props) => {
     if (posts.length === 0) {
       dispatch(fetchPostsStart({ user: user.id, dateRange: value }));
     }
-  }, []);
+  }, [dispatch, posts.length, user.id, value]);
 
   const handleFiltersClear = () => {
     onChange([new Date(), new Date()]);
@@ -55,8 +55,8 @@ const DailyJournal = (props) => {
     if (!loading) journalRef.current.scrollIntoView({ behavior: "smooth" });
   };
 
-  const handleSubmit = (postTitle, postComments, postDate, tags) => {
-    const post = { postTitle, postComments, postDate, tags };
+  const handleSubmit = (postTitle, postComments, postDate, tags, imgUrl) => {
+    const post = { postTitle, postComments, postDate, tags, imgUrl };
     dispatch(addPostStart({ post, uid: user.id }));
   };
 

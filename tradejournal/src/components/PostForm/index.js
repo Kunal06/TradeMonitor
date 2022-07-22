@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "./style.scss";
-import PropTypes from "prop-types";
 
 import ReactQuill from "react-quill";
 import Input from "../../components/Input";
@@ -22,6 +21,7 @@ const PostForm = ({ handler, post, ...otherProps }) => {
   const [postComments, setPostComments] = useState(post.postComments);
   const [postDate, setPostDate] = useState(post.postDate);
   const [tags, setTags] = useState(post.tags ? post.tags : []);
+  const [imgUrl, setImgUrl] = useState(post.imgUrl);
   const location = useLocation();
 
   const handleTagsChange = (tags) => {
@@ -30,13 +30,14 @@ const PostForm = ({ handler, post, ...otherProps }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    handler(postTitle, postComments, postDate, tags);
+    handler(postTitle, postComments, postDate, tags, imgUrl);
     if (!isLoading && errors.length === 0) {
       if (location.pathname.includes("edit-journal")) return;
       // Clear Form
       setPostComments("");
       setPostDate(new Date());
       setPostTitle("");
+      setImgUrl("");
       setTags([]);
     }
   };
@@ -60,6 +61,13 @@ const PostForm = ({ handler, post, ...otherProps }) => {
           onChange={setPostComments}
         />
       </div>
+      <div className="col-10">
+        <Input
+          label="Image Url:"
+          handler={(e) => setImgUrl(e.target.value)}
+          value={imgUrl}
+        />
+      </div>
       <div className="col-10 mt2">
         <InputTag defaultTags={tags} onChange={handleTagsChange} label="Tags" />
       </div>
@@ -81,6 +89,7 @@ PostForm.defaultProps = {
     postTitle: "",
     postComments: "",
     postDate: new Date(),
+    imgUrl:"",
     tags: [],
   },
 };

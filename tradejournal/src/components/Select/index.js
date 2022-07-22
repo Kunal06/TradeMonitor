@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import "./style.scss";
 import { ReactComponent as ArrowDown } from "../../assets/arrow-down.svg";
 import useDetectOutsideClick from "../../hooks/useDetectOutsideClick";
